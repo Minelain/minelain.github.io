@@ -1,0 +1,4 @@
+exclude:
+  - wiki-src
+  - tools
+  - README.md
