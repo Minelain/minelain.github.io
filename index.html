@@ -12,6 +12,10 @@
   <link rel="stylesheet" href="css/style.min.css">
   <link rel="stylesheet" href="css/aos.css">
   <link rel="stylesheet" href="css/custom.css">
+  <link rel="stylesheet" href="css/winter.css">
+  <link rel="stylesheet" href="css/dynamic.css">
+  <link rel="stylesheet" href="css/transition.css">
+  <script src="js/transition.js"></script>
 </head>
 
 <body class="min-w-[400px]" style="background-color: #212121;">
@@ -103,14 +107,46 @@
         <p class="desc">Военно-Политический Minecraft сервер, с огромным лором длинною в 5 лет. Делай историю вместе с нами!</p>
         <button onclick="location.href=`shop.php`" class="buy-penetration-top style-btn" style="background: linear-gradient(135deg, #00CED1 0%, #40E0D0 50%, #00BFFF 100%);">Играть!</button>
       </div>
+      <div class="aurora" aria-hidden="true"></div>
       <div class="bg-image" data-aos="zoom-in" data-aos-duration="1000"></div>
+    </section>
+    <section class="live-section">
+      <div class="container-rrp">
+        <div class="live-grid">
+          <div class="live-card" id="live" data-ip="minecampff.zapto.org" data-aos="fade-right" data-aos-duration="900">
+            <div class="live-status"><span class="live-dot"></span><span class="live-state">Проверяем сервер…</span></div>
+            <div class="live-online"><b data-online>—</b>игроков онлайн</div>
+            <button class="live-ip" type="button" aria-label="Скопировать IP сервера">
+              <span class="live-ip-text"></span>
+              <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 012-2h9"/></svg>
+            </button>
+            <small class="live-hint">Нажмите, чтобы скопировать IP</small>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="birthday-section">
+      <div class="container-rrp">
+        <div class="birthday" id="birthday" data-aos="fade-up" data-aos-duration="1000">
+          <span class="birthday-badge">Скоро юбилей</span>
+          <h2 class="birthday-title">До <b>5-летия</b> MineLain осталось</h2>
+          <p class="birthday-date">18 февраля 2027</p>
+          <div class="countdown" role="timer" aria-live="off">
+            <div class="cd-item"><span class="cd-num" data-cd="days">--</span><span class="cd-label">дней</span></div>
+            <div class="cd-item"><span class="cd-num" data-cd="hours">--</span><span class="cd-label">часов</span></div>
+            <div class="cd-item"><span class="cd-num" data-cd="minutes">--</span><span class="cd-label">минут</span></div>
+            <div class="cd-item"><span class="cd-num" data-cd="seconds">--</span><span class="cd-label">секунд</span></div>
+          </div>
+          <p class="birthday-done">С днём рождения, MineLain! Нам 5 лет — спасибо, что были с нами!</p>
+        </div>
+      </div>
     </section>
     <section class="second-section">
       <div class="container-rrp">
         <div class="wraper">
           <h2 class="title-section">Чем можно заняться?</h2>
           <ul class="todo">
-            <li class="todo-item" data-aos="fade-up" data-aos-duration="1500">
+            <li class="todo-item" data-aos="fade-right" data-aos-duration="1500">
               <img src="images/1.webp" alt="" class="todo-image" width="240" height="300" loading="lazy" decoding="async">
               <div class="todo-info">
                 <h1 class="todo-item-title">Выживайте</h1>
@@ -118,21 +154,21 @@
                   другими игроками</p>
               </div>
             </li>
-            <li class="todo-item" data-aos="fade-up" data-aos-duration="1500">
+            <li class="todo-item" data-aos="zoom-in-up" data-aos-duration="1500">
               <img src="images/2.webp" alt="" class="todo-image" width="240" height="300" loading="lazy" decoding="async">
               <div class="todo-info">
                 <h1 class="todo-item-title">Стройте города!</h1>
                 <p class="todo-item-desc">Основывайте свои поселения и развивайте их, строя единоличную империю</p>
               </div>
             </li>
-            <li class="todo-item" data-aos="fade-up" data-aos-duration="1500">
+            <li class="todo-item" data-aos="zoom-in-up" data-aos-duration="1500">
               <img src="images/3.webp" alt="" class="todo-image" width="240" height="300" loading="lazy" decoding="async">
               <div class="todo-info">
                 <h1 class="todo-item-title">Доминируйте</h1>
                 <p class="todo-item-desc">Ваши враги не стоят на месте, это вечная политическая гонка вооружений</p>
               </div>
             </li>
-            <li class="todo-item" data-aos="fade-up" data-aos-duration="1300">
+            <li class="todo-item" data-aos="fade-left" data-aos-duration="1300">
               <img src="images/4.webp" alt="" class="todo-image" width="240" height="300" loading="lazy" decoding="async">
               <div class="todo-info">
                 <h1 class="todo-item-title">Воюйте!</h1>
@@ -350,7 +386,7 @@
         <div class="wraper">
           <h2 class="section-title">Мы уникальны!</h2>
           <ul class="card-list">
-            <li class="card" data-aos="fade-up" data-aos-duration="1000">
+            <li class="card" data-aos="flip-up" data-aos-duration="1000">
               <div class="card-header">
                 <div class="wraper-title">
                   <img src="images/balance_wallet.svg" alt="" class="title-icon">
@@ -363,7 +399,7 @@
               </div>
               <a href="https://politmc-1.gitbook.io/politmc" class="card-link" style="color: #0FD4FF;" target="_blank">Как это работает?</a>
             </li>
-            <li class="card" data-aos="fade-up" data-aos-duration="1200">
+            <li class="card" data-aos="flip-up" data-aos-duration="1200">
               <div class="card-header">
                 <div class="wraper-title">
                   <img src="images/brush.svg" alt="" class="title-icon">
@@ -376,7 +412,7 @@
               </div>
               <a href="https://politmc-1.gitbook.io/politmc" class="card-link" style="color: #79FF63;" target="_blank">Как это работает?</a>
             </li>
-            <li class="card" data-aos="fade-up" data-aos-duration="1400">
+            <li class="card" data-aos="flip-up" data-aos-duration="1400">
               <div class="card-header">
                 <div class="wraper-title">
                   <img src="images/block.svg" alt="" class="title-icon">
@@ -388,7 +424,7 @@
               </div>
               <a href="https://politmc-1.gitbook.io/politmc" class="card-link" style="color: #FFE765;" target="_blank">Как это работает?</a>
             </li>
-            <li class="card" data-aos="fade-up" data-aos-duration="1600">
+            <li class="card" data-aos="flip-up" data-aos-duration="1600">
               <div class="card-header">
                 <div class="wraper-title">
                   <img src="images/voice.svg" alt="" class="title-icon">
@@ -453,7 +489,7 @@
           <h3 class="section-subtitle">Погрузитесь в жизнь сервера ещё до покупки проходки</h3>
           <div class="wraper-cards-links">
             <ul class="content-cards-links">
-              <li class="item-card" data-aos="fade-up" data-aos-duration="1000">
+              <li class="item-card" data-aos="fade-up" data-aos-delay="0" data-aos-duration="1000">
                 <a href="https://discord.gg/KH596Yzb2D" class="item-card-link" target="_blank">
                   <div class="image-wraper" style="background-color: #E6E8FD;">
                     <img src="images/discord.svg" alt="" class="img">
@@ -464,7 +500,7 @@
                   </div>
                 </a>
               </li>
-              <li class="item-card" data-aos="fade-up" data-aos-duration="1100">
+              <li class="item-card" data-aos="fade-up" data-aos-delay="120" data-aos-duration="1100">
                 <a href="https://vk.com/minelain" class="item-card-link" target="_blank">
                   <div class="image-wraper" style="background-color: #D9EBFF;">
                     <img src="images/vk.svg" alt="" class="img">
@@ -475,7 +511,7 @@
                   </div>
                 </a>
               </li>
-              <li class="item-card" data-aos="fade-up" data-aos-duration="1200">
+              <li class="item-card" data-aos="fade-up" data-aos-delay="240" data-aos-duration="1200">
                 <a href="https://t.me/minelain_official" class="item-card-link" target="_blank">
                   <div class="image-wraper" style="background-color: #DFF2FC;">
                     <img src="images/tg.svg" alt="" class="img">
@@ -486,7 +522,7 @@
                   </div>
                 </a>
               </li>
-              <li class="item-card" data-aos="fade-up" data-aos-duration="1300">
+              <li class="item-card" data-aos="fade-up" data-aos-delay="0" data-aos-duration="1300">
                 <a href="https://minelain.gitbook.io/docs" class="item-card-link" target="_blank">
                   <div class="image-wraper" style="background-color: #EAE0DD;">
                     <img src="images/book.png" alt="" class="img">
@@ -497,7 +533,7 @@
                   </div>
                 </a>
               </li>
-              <li class="item-card" data-aos="fade-up" data-aos-duration="1400">
+              <li class="item-card" data-aos="fade-up" data-aos-delay="120" data-aos-duration="1400">
                 <a href="https://www.youtube.com/channel/UCmY473gVl_69VHeMadGJwNQ" class="item-card-link" target="_blank">
                   <div class="image-wraper" style="background-color: #FFD9D9;">
                     <img src="images/youtube.svg" alt="" class="img">
@@ -508,14 +544,10 @@
                   </div>
                 </a>
               </li>
-              <li class="item-card" data-aos="fade-up" data-aos-duration="1500">
+              <li class="item-card" data-aos="fade-up" data-aos-delay="240" data-aos-duration="1500">
                 <a href="map.html" class="item-card-link" target="_blank">
                   <div class="image-wraper" style="background-color: #EDEDE2;">
-<<<<<<< HEAD
                     <img src="http://minelain.zapto.org:8080" alt="" class="img" loading="lazy" decoding="async">
-=======
-                    <img src="http://minelain.zapto.org:8080" alt="" class="img">
->>>>>>> 32a8dcff10707d06d876e49db7a0178aa6c312ac
                   </div>
                   <div class="info-wraper">
                     <h3 class="title-card-link">Интерактивная карта</h3>
@@ -596,5 +628,8 @@
   </script>
 
 <script src="js/flowbite.min.js" defer></script>
+<script src="js/winter.js" defer></script>
+<script src="js/snow.js" defer></script>
+<script src="js/dynamic.js" defer></script>
 </body>
 </html>

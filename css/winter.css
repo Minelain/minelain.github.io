@@ -1,0 +1,201 @@
+/* ===========================
+   ЗИМНЯЯ ТЕМА
+   Подключается последним, переопределяет цвета. Чтобы отключить тему —
+   уберите <link ... winter.css> и <script ... winter.js> со страниц.
+=========================== */
+:root {
+    --ice-1: #e8f7ff;
+    --ice-2: #9fe7ff;
+    --frost: #0e1724;
+    --frost-2: #14202f;
+    --frost-3: #1b2b40;
+}
+
+body {
+    background: linear-gradient(180deg, #0c1420 0%, #132033 45%, #0f1a29 100%) !important;
+}
+
+/* Шапка: морозный стиль и сосульки */
+header {
+    position: relative;
+    z-index: 30;
+    background-color: #0e1724 !important;
+    border-bottom: 1px solid rgba(159, 231, 255, 0.18);
+}
+
+/* Заголовки — ледяной градиент */
+.title,
+.title-section,
+.news-title {
+    background-image: linear-gradient(135deg, #ffffff 0%, #bfeeff 60%, #8fdcff 100%) !important;
+}
+
+/* Секции и карточки */
+.three-section {
+    background: linear-gradient(135deg, #172740 0%, #0f1b2c 100%) !important;
+}
+.three-section::before {
+    background: radial-gradient(circle at 30% 20%, rgba(120, 220, 255, 0.14) 0%, transparent 50%),
+                radial-gradient(circle at 70% 80%, rgba(160, 200, 255, 0.12) 0%, transparent 50%) !important;
+}
+.first-section::before {
+    background: radial-gradient(circle at 20% 50%, rgba(120, 220, 255, 0.14) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(180, 220, 255, 0.12) 0%, transparent 50%) !important;
+}
+.todo-item,
+.four-section .card,
+.six-section .item-card-link,
+.news-card {
+    border-color: rgba(159, 231, 255, 0.16) !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18);
+}
+.four-section .card-list .card { background: linear-gradient(135deg, #1b2c44 0%, #142133 100%) !important; }
+.three-section .player-card {
+    border-color: rgba(159, 231, 255, 0.55);
+    background: rgba(200, 235, 255, 0.07);
+    box-shadow: 0 4px 15px rgba(120, 220, 255, 0.12);
+}
+.news-card-image,
+.post-cover { background: #1b2b40; }
+
+/* ---------- Полоса прокрутки сверху ---------- */
+.scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    z-index: 100;
+    background: linear-gradient(90deg, #00CED1, #9fe7ff, #ffffff);
+    transform-origin: 0 50%;
+    transform: scaleX(0);
+    will-change: transform;
+    pointer-events: none;
+}
+
+/* ---------- Северное сияние в шапке главной ---------- */
+.first-section .aurora {
+    position: absolute;
+    inset: -20% -10% auto -10%;
+    height: 90%;
+    z-index: 0;
+    pointer-events: none;
+    background:
+        radial-gradient(ellipse 40% 50% at 25% 40%, rgba(0, 220, 200, 0.28), transparent 70%),
+        radial-gradient(ellipse 35% 45% at 70% 30%, rgba(90, 140, 255, 0.26), transparent 70%),
+        radial-gradient(ellipse 30% 40% at 50% 60%, rgba(170, 120, 255, 0.18), transparent 70%);
+    animation: auroraDrift 14s ease-in-out infinite alternate;
+    will-change: transform, opacity;
+}
+@keyframes auroraDrift {
+    0%   { transform: translate3d(-4%, 0, 0) scale(1);    opacity: 0.75; }
+    100% { transform: translate3d(5%, 4%, 0) scale(1.12); opacity: 1; }
+}
+.first-section .bg-image { z-index: 1; }
+
+/* ---------- Отсчёт до 5-летия ---------- */
+.birthday-section {
+    margin-top: 70px;
+}
+.birthday {
+    position: relative;
+    overflow: hidden;
+    padding: 44px 30px 38px;
+    text-align: center;
+    border-radius: 24px;
+    border: 1px solid rgba(159, 231, 255, 0.22);
+    background:
+        radial-gradient(ellipse at 50% 0%, rgba(0, 206, 209, 0.22), transparent 65%),
+        linear-gradient(160deg, #182a42 0%, #101c2d 100%);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+.birthday-badge {
+    display: inline-block;
+    padding: 6px 16px;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #0c1420;
+    background: linear-gradient(135deg, #00CED1, #9fe7ff);
+}
+.birthday-title {
+    margin-top: 16px;
+    font-size: 2.4rem;
+    font-weight: 800;
+    line-height: 1.15;
+    color: #fff;
+}
+.birthday-title b {
+    background: linear-gradient(135deg, #00CED1, #9fe7ff 60%, #fff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.birthday-date {
+    margin-top: 8px;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 1.05rem;
+}
+.countdown {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+    max-width: 720px;
+    margin: 32px auto 0;
+}
+.cd-item {
+    padding: 20px 8px 16px;
+    border-radius: 18px;
+    border: 1px solid rgba(159, 231, 255, 0.2);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.03));
+}
+.cd-num {
+    display: block;
+    font-size: 3rem;
+    font-weight: 800;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    background: linear-gradient(180deg, #ffffff 20%, #8fdcff 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.cd-num.tick { animation: cdTick 0.45s ease; }
+@keyframes cdTick {
+    0%   { transform: translateY(-6px); opacity: 0.3; }
+    100% { transform: translateY(0);    opacity: 1; }
+}
+.cd-label {
+    display: block;
+    margin-top: 10px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #9fe7ff;
+}
+.birthday.is-done .countdown { display: none; }
+.birthday-done {
+    display: none;
+    margin-top: 24px;
+    font-size: 1.2rem;
+    color: #e8f7ff;
+}
+.birthday.is-done .birthday-done { display: block; }
+
+@media (max-width: 620px) {
+    .birthday-section { margin-top: 50px; }
+    .birthday { padding: 32px 14px 28px; border-radius: 18px; }
+    .birthday-title { font-size: 1.7rem; }
+    .countdown { gap: 8px; }
+    .cd-item { padding: 14px 4px 12px; border-radius: 14px; }
+    .cd-num { font-size: 1.9rem; }
+    .cd-label { font-size: 0.62rem; letter-spacing: 0.02em; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .first-section .aurora { animation: none; }
+    .cd-num.tick { animation: none; }
+}
