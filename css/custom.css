@@ -139,9 +139,8 @@
     background: rgba(255, 255, 255, 0.05);
     border-radius: 16px;
     padding: 20px;
-    transition: all 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
     border: 2px solid rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(10px);
     position: relative;
     overflow: hidden;
     width: 100%;
@@ -170,7 +169,7 @@
 
 .todo-image {
     border-radius: 12px;
-    transition: all 0.3s ease;
+    transition: filter 0.3s ease;
     filter: brightness(0.9);
 }
 
@@ -205,7 +204,6 @@
 .player-card {
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 12px;
-    backdrop-filter: blur(10px);
     position: relative;
     overflow: hidden;
 }
@@ -215,8 +213,7 @@
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.03) 100%);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 16px;
-    backdrop-filter: blur(10px);
-    transition: all 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
     position: relative;
     overflow: hidden;
 }
@@ -249,7 +246,7 @@
     border-radius: 8px;
     margin-bottom: 8px;
     border: 1px solid rgba(255, 255, 255, 0.1);
-    transition: all 0.3s ease;
+    transition: background-color 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
     position: relative;
     overflow: hidden;
 }
@@ -283,15 +280,14 @@
 
 /* Улучшенные карточки ссылок */
 .six-section .item-card {
-    transition: all 0.3s ease;
+    transition: transform 0.3s ease;
 }
 
 .six-section .item-card-link {
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.03) 100%);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 16px;
-    backdrop-filter: blur(10px);
-    transition: all 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
     position: relative;
     overflow: hidden;
 }
@@ -319,7 +315,7 @@
 
 .image-wraper {
     border-radius: 12px;
-    transition: all 0.3s ease;
+    transition: transform 0.3s ease;
     overflow: hidden;
 }
 
@@ -350,29 +346,6 @@
     position: relative;
     z-index: 2;
 }
-
-/* Анимация появления элементов */
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.todo-item,
-.four-section .card,
-.six-section .item-card {
-    animation: fadeInUp 0.6s ease forwards;
-}
-
-.todo-item:nth-child(1) { animation-delay: 0.1s; }
-.todo-item:nth-child(2) { animation-delay: 0.2s; }
-.todo-item:nth-child(3) { animation-delay: 0.3s; }
-.todo-item:nth-child(4) { animation-delay: 0.4s; }
 
 /* Улучшенные медиа-запросы */
 @media (max-width: 768px) {
@@ -529,6 +502,7 @@
     #navbar-sticky.show li:nth-child(2) { transition-delay: 0.1s; }
     #navbar-sticky.show li:nth-child(3) { transition-delay: 0.15s; }
     #navbar-sticky.show li:nth-child(4) { transition-delay: 0.2s; }
+    #navbar-sticky.show li:nth-child(5) { transition-delay: 0.25s; }
     
     #navbar-sticky a {
         padding: 0.8rem 1.2rem !important;
@@ -735,7 +709,6 @@
     height: 100%;
     display: flex;
     flex-direction: column;
-    transition: all 0.3s ease;
 }
 
 .six-section .content-cards-links .item-card .item-card-link {
@@ -884,7 +857,7 @@
         opacity: 1;
         transform: translateY(0) scale(1);
         pointer-events: auto;
-        max-height: 500px;
+        max-height: 600px;
         overflow: visible;
     }
 
@@ -920,4 +893,38 @@
     #navbar-sticky.show li:nth-child(2) { transition-delay: 0.15s; }
     #navbar-sticky.show li:nth-child(3) { transition-delay: 0.2s; }
     #navbar-sticky.show li:nth-child(4) { transition-delay: 0.25s; }
+    #navbar-sticky.show li:nth-child(5) { transition-delay: 0.3s; }
+}
+
+
+/* ===========================
+   ПРОИЗВОДИТЕЛЬНОСТЬ
+=========================== */
+
+/* Бегущая строка игроков: слой на GPU, ставится на паузу вне экрана */
+.three-section .legendary-players-wall {
+    contain: layout paint;
+}
+.three-section .legendary-players-wall.is-offscreen .players-row {
+    animation-play-state: paused;
+}
+.three-section .players-row,
+.three-section .player-card {
+    backface-visibility: hidden;
+}
+
+/* Эффекты наведения нужны только там, где есть мышь.
+   На телефонах hover «залипает» после тапа и вызывает лишние перерисовки */
+@media (hover: none) {
+    .todo-item:hover,
+    .four-section .card:hover,
+    .six-section .item-card-link:hover,
+    .five-section .spoller-item:hover {
+        transform: none;
+        box-shadow: none;
+    }
+    .todo-item::before,
+    .six-section .item-card-link::before {
+        display: none;
+    }
 }
