@@ -38,6 +38,32 @@
   });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { setMenu(false); closeLb(); } });
 
+  /* ---------- плавающие плашки: в меню и у оглавления ---------- */
+  var pill = null, tocPill = null;
+  function setPill(el, target, ready) {
+    if (!el || !target) { if (el) el.style.opacity = 0; return; }
+    el.style.opacity = '';
+    el.style.setProperty('--y', target.offsetTop + 'px');
+    el.style.setProperty('--h', target.offsetHeight + 'px');
+    if (ready && !el.classList.contains('ready')) requestAnimationFrame(function () { el.classList.add('ready'); });
+  }
+  function placePill(act) {
+    var nav = $('.wiki-nav');
+    if (!nav) return;
+    if (!pill) { pill = document.createElement('span'); pill.className = 'wiki-pill'; nav.insertBefore(pill, nav.firstChild); nav.classList.add('has-pill'); }
+    setPill(pill, act, true);
+  }
+  function placeTocPill() {
+    var toc = $('.wiki-toc');
+    if (!toc || !toc.children.length) { tocPill = null; return; }
+    tocPill = $('.wiki-toc-pill', toc);
+    if (!tocPill) { tocPill = document.createElement('span'); tocPill.className = 'wiki-toc-pill'; toc.insertBefore(tocPill, toc.firstChild); }
+    setPill(tocPill, $('.wiki-toc a.on', toc), true);
+  }
+  // шрифты/размеры могли сдвинуть пункты после первой отрисовки
+  window.addEventListener('load', function () { var a = $('.wiki-nav a.active'); if (a) { setPill(pill, a, false); placeTocPill(); } });
+  window.addEventListener('resize', function () { var a = $('.wiki-nav a.active'); if (a) setPill(pill, a, false); placeTocPill(); }, { passive: true });
+
   /* ---------- активный пункт в левом меню ---------- */
   function markActive() {
     var here = location.pathname.replace(/index\.html$/, '');
@@ -48,6 +74,7 @@
       a.classList.toggle('active', on);
       if (on) { a.setAttribute('aria-current', 'page'); act = a; } else a.removeAttribute('aria-current');
     });
+    placePill(act);
     if (act && side && side.scrollHeight > side.clientHeight) {
       var top = act.offsetTop, h = act.offsetHeight;
       if (top < side.scrollTop + 40 || top + h > side.scrollTop + side.clientHeight - 40) {
@@ -169,12 +196,16 @@
         entries.forEach(function (en) {
           if (en.isIntersecting) {
             links.forEach(function (a) { a.classList.remove('on'); });
-            var a = map[en.target.id]; if (a) a.classList.add('on');
+            var a = map[en.target.id]; if (a) { a.classList.add('on'); setPill(tocPill, a, true); }
           }
         });
       }, { rootMargin: '-90px 0px -70% 0px' });
       $$('.wiki-body h2[id], .wiki-body h3[id]').forEach(function (h) { io.observe(h); });
     }
+
+    placeTocPill();
+    reveal();
+    $$('.wiki-card, .wiki-ref, .wiki-pager a').forEach(function (el) { el.classList.add('spot'); });
 
     // клик по команде копирует её
     $$('.wiki-body code').forEach(function (c) {
@@ -192,6 +223,89 @@
       img.addEventListener('click', function () { $('img', lb).src = img.src; lb.classList.add('open'); });
     });
   }
+
+  /* ---------- блоки статьи плавно появляются при прокрутке ---------- */
+  var rvIO = null, rvPending = [];
+  function showRv(el) {
+    if (!el.classList.contains('rv') || el.classList.contains('in')) return;
+    el.classList.add('in');
+    if (rvIO) rvIO.unobserve(el);
+    setTimeout(function () { el.classList.remove('rv', 'in'); el.style.removeProperty('--d'); }, 900);   // возвращаем обычные hover-эффекты
+  }
+  // если прокрутка «перепрыгнула» блок (якорь, «Наверх»), IntersectionObserver его не заметит — досвечиваем сами
+  function sweepRv() {
+    if (!rvPending.length) return;
+    var vh = window.innerHeight;
+    rvPending = rvPending.filter(function (el) {
+      if (!el.isConnected || el.classList.contains('in')) return false;
+      if (el.getBoundingClientRect().top < vh * 0.92) { showRv(el); return false; }
+      return true;
+    });
+  }
+  function reveal() {
+    if (rvIO) { rvIO.disconnect(); rvIO = null; }
+    rvPending = [];
+    if (reduce || !('IntersectionObserver' in window)) return;
+    var items = [];
+    $$('.wiki-body > *').forEach(function (el) {
+      if (el.classList.contains('wiki-cards')) $$('.wiki-card', el).forEach(function (c) { items.push(c); });
+      else items.push(el);
+    });
+    var vh = window.innerHeight;
+    var below = items.filter(function (el) { return el.getBoundingClientRect().top > vh - 30; });
+    if (!below.length) return;
+    below.forEach(function (el) { el.classList.add('rv'); });
+    rvPending = below.slice();
+    rvIO = new IntersectionObserver(function (entries) {
+      var k = 0;
+      entries.forEach(function (en) {
+        var el = en.target;
+        if (en.isIntersecting || en.boundingClientRect.top < 0) {          // «проскочили» якорем — тоже показываем
+          el.style.setProperty('--d', (Math.min(k++, 4) * 0.06) + 's');
+          showRv(el);
+        }
+      });
+    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.05 });
+    below.forEach(function (el) { rvIO.observe(el); });
+  }
+
+  /* ---------- подсветка карточек под курсором ---------- */
+  if (window.matchMedia('(hover: hover)').matches) {
+    var spotEl = null, spotX = 0, spotY = 0, spotRaf = 0;
+    document.addEventListener('mousemove', function (e) {
+      var el = e.target.closest && e.target.closest('.spot');
+      if (!el) return;
+      spotEl = el; spotX = e.clientX; spotY = e.clientY;
+      if (spotRaf) return;
+      spotRaf = requestAnimationFrame(function () {
+        spotRaf = 0;
+        var r = spotEl.getBoundingClientRect();
+        spotEl.style.setProperty('--mx', (spotX - r.left) + 'px');
+        spotEl.style.setProperty('--my', (spotY - r.top) + 'px');
+      });
+    }, { passive: true });
+  }
+
+  /* ---------- «Наверх» с кольцом прогресса чтения ---------- */
+  var topBtn = document.createElement('button');
+  topBtn.className = 'wiki-top'; topBtn.type = 'button'; topBtn.setAttribute('aria-label', 'Наверх');
+  topBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>';
+  document.body.appendChild(topBtn);
+  topBtn.addEventListener('click', function () { window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' }); });
+  var topRaf = 0;
+  function onScroll() {
+    if (topRaf) return;
+    topRaf = requestAnimationFrame(function () {
+      topRaf = 0;
+      var max = document.documentElement.scrollHeight - window.innerHeight;
+      var y = window.scrollY;
+      topBtn.classList.toggle('show', y > 700);
+      topBtn.style.setProperty('--p', max > 0 ? Math.min(100, Math.round(y / max * 100)) : 0);
+      sweepRv();
+    });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
 
   /* =====================================================================
      Бесшовная навигация
@@ -226,7 +340,14 @@
     var token = ++busy, t0 = Date.now();
     var art = $('.wiki-article');
     if (push !== false) history.replaceState({ y: window.scrollY }, '');   // запоминаем, где стояли
-    if (art && !reduce) art.classList.add('is-leaving');
+    // направление: вперёд по оглавлению — статья уезжает влево и приезжает справа, назад — наоборот
+    var navLinks = $$('.wiki-nav a'), from = -1, to = -1, tp = u.pathname.replace(/index\.html$/, '');
+    navLinks.forEach(function (a, i) {
+      if (a.classList.contains('active')) from = i;
+      if (new URL(a.href, location.href).pathname.replace(/index\.html$/, '') === tp) to = i;
+    });
+    var dir = from > -1 && to > -1 ? (to > from ? 1 : -1) : 0;
+    if (art && !reduce) { art.style.setProperty('--lx', (-dir * 16) + 'px'); art.classList.add('is-leaving'); }
     var slow = setTimeout(function () { loader.classList.add('on'); }, 220);
 
     Promise.all([load(u.href), new Promise(function (ok) { setTimeout(ok, reduce ? 0 : 130); })]).then(function (res) {
@@ -258,6 +379,7 @@
       window.scrollTo({ top: target ? target.getBoundingClientRect().top + window.scrollY - 90 : y, behavior: 'instant' });
 
       if (!reduce) {
+        nArt.style.setProperty('--dx', (dir * 28) + 'px');
         nArt.classList.add('is-entering');
         nArt.addEventListener('animationend', function f(e) {
           if (e.target !== nArt) return;

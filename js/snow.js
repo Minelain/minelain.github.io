@@ -16,6 +16,7 @@
   var COUNT_DESKTOP = 80;    // число снежинок на ПК
   var COUNT_MOBILE = 35;     // число снежинок на телефоне
   var FPS = 30;              // частота кадров
+  var SPEED = 0.75;          // скорость падения и покачивания (1 = как раньше; 0.75 = на 25% медленнее)
 
   if (!ENABLED) return;
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
@@ -60,10 +61,10 @@
       k: k,
       x: Math.random() * w,
       y: initial ? Math.random() * h : -20,
-      vy: 25 + k * 22 + Math.random() * 20,   // px/сек
+      vy: (25 + k * 22 + Math.random() * 20) * SPEED,   // px/сек
       sway: 10 + Math.random() * 25,
       ph: Math.random() * 6.28,
-      sp: 0.4 + Math.random() * 0.8
+      sp: (0.4 + Math.random() * 0.8) * SPEED
     };
   }
   resize();
