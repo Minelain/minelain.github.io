@@ -166,18 +166,6 @@
           move(Math.max(-1, Math.min(1, e.gamma / 25)), Math.max(-1, Math.min(1, ((e.beta || 0) - 45) / 25)));
         }, { passive: true });
       }
-      // магнитная кнопка
-      var btn = $('.buy-penetration-top', hero);
-      if (btn && canHover) {
-        hero.addEventListener('pointermove', function (e) {
-          var r = btn.getBoundingClientRect();
-          var dx = e.clientX - (r.left + r.width / 2), dy = e.clientY - (r.top + r.height / 2);
-          var d = Math.hypot(dx, dy);
-          if (d < 140) btn.style.translate = (dx * 0.22).toFixed(1) + 'px ' + (dy * 0.3).toFixed(1) + 'px';
-          else btn.style.translate = '';
-        }, { passive: true });
-        hero.addEventListener('pointerleave', function () { btn.style.translate = ''; });
-      }
     }
   }
 
@@ -217,8 +205,8 @@
     var stateEl = $('.live-state', live), onEl = $('[data-online]', live);
     var ipBtn = $('.live-ip', live);
     $('.live-ip-text', live).textContent = ip;
-    ipBtn.addEventListener('click', function () {
-      var done = function () { toast('IP скопирован: ' + ip); };
+    function copyIp(cb) {
+      var done = function () { if (cb) cb(); };
       if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(ip).then(done, done);
       else {
         var ta = document.createElement('textarea'); ta.value = ip; ta.style.position = 'fixed'; ta.style.opacity = '0';
@@ -226,8 +214,85 @@
         try { document.execCommand('copy'); } catch (_) {}
         ta.remove(); done();
       }
+    }
+    /* «взлом» текста: буквы IP собираются из случайных символов */
+    function scramble(el, text) {
+      if (reduce) { el.textContent = text; return; }
+      var chars = 'abcdefghijklmnopqrstuvwxyz0123456789.-_', t0 = performance.now(), dur = 700;
+      (function step(now) {
+        var k = Math.min(1, (now - t0) / dur), out = '';
+        for (var i = 0; i < text.length; i++) {
+          out += (i / text.length < k || text[i] === '.') ? text[i] : chars[(Math.random() * chars.length) | 0];
+        }
+        el.textContent = out;
+        if (k < 1) requestAnimationFrame(step); else el.textContent = text;
+      })(t0);
+    }
+    function rings(card) {
+      if (reduce) return;
+      for (var i = 0; i < 3; i++) {
+        var r = document.createElement('i'); r.className = 'fx-ring';
+        r.style.animationDelay = (i * 0.18) + 's';
+        card.appendChild(r);
+        setTimeout(function (n) { n.remove(); }, 1800, r);
+      }
+    }
+    function arrive(isCopied) {
+      var r = live.getBoundingClientRect();
+      live.classList.remove('fx-arrive'); void live.offsetWidth; live.classList.add('fx-arrive');
+      setTimeout(function () { live.classList.remove('fx-arrive'); }, 2200);
+      rings(live);
+      if (isCopied) {
+        ipBtn.classList.add('is-copied');
+        setTimeout(function () { ipBtn.classList.remove('is-copied'); }, 2600);
+      }
+      scramble($('.live-ip-text', live), ip);
+      /* салют: три залпа из разных точек карточки */
+      if (window.MineFX) {
+        var pts = [[.18, .1], [.5, 0], [.82, .1]];
+        pts.forEach(function (q, i) {
+          setTimeout(function () { burst(r.left + r.width * q[0], r.top + r.height * q[1] + 20, innerWidth < 700 ? 40 : 70); }, i * 220);
+        });
+      }
+    }
+    ipBtn.addEventListener('click', function () {
+      copyIp(function () { toast('IP скопирован: ' + ip); });
       if (window.MineFX) { var r = ipBtn.getBoundingClientRect(); burst(r.left + r.width / 2, r.top, 30); }
+      ipBtn.classList.add('is-copied');
+      setTimeout(function () { ipBtn.classList.remove('is-copied'); }, 2200);
     });
+
+    /* кнопка «Играть!»: копирует IP, летит к блоку онлайна и взрывается эффектами */
+    var play = $('#play-btn');
+    if (play) {
+      var playLabel = play.textContent;
+      play.addEventListener('click', function (e) {
+        var pr = play.getBoundingClientRect();
+        copyIp();
+        play.classList.add('is-fired');
+        play.textContent = 'IP скопирован ✓';
+        setTimeout(function () { play.classList.remove('is-fired'); play.textContent = playLabel; }, 2600);
+        if (window.MineFX) burst(pr.left + pr.width / 2, pr.top + pr.height / 2, innerWidth < 700 ? 50 : 90);
+        /* вспышка-волна от кнопки */
+        var w = document.createElement('i'); w.className = 'fx-flash';
+        w.style.left = (pr.left + pr.width / 2) + 'px'; w.style.top = (pr.top + pr.height / 2) + 'px';
+        document.body.appendChild(w); setTimeout(function () { w.remove(); }, 900);
+        toast('IP скопирован: ' + ip);
+
+        var target = live.getBoundingClientRect().top + scrollY - (innerHeight - live.offsetHeight) / 2;
+        target = Math.max(0, Math.round(target));
+        var wasFar = Math.abs(target - scrollY) > 40;
+        scrollTo({ top: target, behavior: reduce ? 'auto' : 'smooth' });
+        /* ждём остановки прокрутки, затем запускаем эффекты */
+        var last = -1, still = 0, t0 = performance.now();
+        (function wait() {
+          var y = scrollY;
+          still = (Math.abs(y - last) < 1) ? still + 1 : 0; last = y;
+          if ((still > 6 && wasFar) || !wasFar || performance.now() - t0 > 2200) { setTimeout(function () { arrive(true); }, 80); return; }
+          requestAnimationFrame(wait);
+        })();
+      });
+    }
     var setState = function (cls, text, online) {
       live.classList.remove('is-online', 'is-offline');
       if (cls) live.classList.add(cls);

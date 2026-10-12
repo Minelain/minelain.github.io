@@ -96,7 +96,7 @@ header {
 
 /* ---------- Отсчёт до 5-летия ---------- */
 .birthday-section {
-    margin-top: 70px;
+    margin-top: 36px;
 }
 .birthday {
     position: relative;
@@ -187,7 +187,7 @@ header {
 .birthday.is-done .birthday-done { display: block; }
 
 @media (max-width: 620px) {
-    .birthday-section { margin-top: 50px; }
+    .birthday-section { margin-top: 24px; }
     .birthday { padding: 32px 14px 28px; border-radius: 18px; }
     .birthday-title { font-size: 1.7rem; }
     .countdown { gap: 8px; }

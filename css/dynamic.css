@@ -382,3 +382,63 @@ body::after {
 .is-scrolling .live-dot::after, .is-busy .live-dot::after {
     animation-play-state: paused !important;
 }
+
+/* ---------- Кнопка «Играть!» и спецэффекты прилёта к блоку IP ---------- */
+#play-btn { position: relative; overflow: hidden; isolation: isolate; transition: transform .2s ease, box-shadow .3s ease; }
+#play-btn::after {
+    content: ""; position: absolute; top: 0; left: -60%; width: 40%; height: 100%; z-index: -1;
+    background: linear-gradient(100deg, transparent, rgba(255,255,255,.55), transparent);
+    transform: skewX(-20deg) translateX(0); animation: playShine 3.6s ease-in-out infinite;
+}
+@keyframes playShine { 0%, 60% { transform: skewX(-20deg) translateX(0); } 100% { transform: skewX(-20deg) translateX(520%); } }
+#play-btn:hover { transform: translateY(-2px) scale(1.03); box-shadow: 0 0 28px rgba(0,206,209,.65); }
+#play-btn:active { transform: scale(.96); }
+#play-btn.is-fired { animation: playPop .5s cubic-bezier(.2,1.6,.4,1); box-shadow: 0 0 40px rgba(76,255,138,.7); }
+@keyframes playPop { 0% { transform: scale(.9); } 60% { transform: scale(1.1); } 100% { transform: scale(1); } }
+
+.fx-flash {
+    position: fixed; z-index: 9998; width: 40px; height: 40px; margin: -20px 0 0 -20px; border-radius: 50%;
+    pointer-events: none; border: 3px solid #9fe7ff; box-shadow: 0 0 30px #00ced1, inset 0 0 20px #00ced1;
+    animation: fxFlash .8s ease-out forwards;
+}
+@keyframes fxFlash { from { transform: scale(.4); opacity: 1; } to { transform: scale(14); opacity: 0; } }
+
+.live-card.fx-arrive { animation: liveArrive 1.4s cubic-bezier(.2,.9,.3,1.2); }
+.live-card.fx-arrive::before {
+    content: ""; position: absolute; inset: -2px; border-radius: inherit; pointer-events: none; z-index: 0;
+    background: conic-gradient(from 0deg, #00ced1, #9fe7ff, #4cff8a, #ffd27a, #ff7ad9, #00ced1);
+    -webkit-mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+            mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+    padding: 3px; animation: liveBorder 2s linear forwards;
+}
+@keyframes liveBorder { from { transform: rotate(0); opacity: 1; } 80% { opacity: 1; } to { transform: rotate(0); opacity: 0; } }
+@keyframes liveArrive {
+    0% { transform: scale(.94); box-shadow: 0 0 0 rgba(0,206,209,0); }
+    35% { transform: scale(1.035); box-shadow: 0 0 60px rgba(0,206,209,.7), 0 0 120px rgba(159,231,255,.35); }
+    100% { transform: scale(1); box-shadow: 0 0 0 rgba(0,206,209,0); }
+}
+.live-card.fx-arrive::after {
+    content: ""; position: absolute; top: 0; bottom: 0; left: 0; width: 35%; pointer-events: none;
+    background: linear-gradient(100deg, transparent, rgba(255,255,255,.28), transparent);
+    animation: liveSweep 1.2s ease-out .15s both;
+}
+@keyframes liveSweep { from { transform: translateX(-120%); } to { transform: translateX(420%); } }
+.fx-ring {
+    position: absolute; left: 50%; top: 50%; width: 120px; height: 120px; margin: -60px 0 0 -60px; border-radius: 50%;
+    border: 2px solid rgba(159,231,255,.8); pointer-events: none; z-index: 1;
+    animation: fxRing 1.3s ease-out both;
+}
+@keyframes fxRing { from { transform: scale(.2); opacity: .9; } to { transform: scale(9); opacity: 0; } }
+
+.live-ip { position: relative; transition: background .25s, box-shadow .25s, transform .15s; }
+.live-ip.is-copied { background: rgba(76,255,138,.18); box-shadow: 0 0 0 2px rgba(76,255,138,.7), 0 0 28px rgba(76,255,138,.45); }
+.live-ip.is-copied svg { stroke: #4cff8a; }
+.live-ip.is-copied::after {
+    content: "Скопировано ✓"; position: absolute; right: 56px; top: 50%; transform: translateY(-50%);
+    font-size: .8rem; color: #4cff8a; animation: fxFade 2.4s ease both; pointer-events: none;
+}
+@keyframes fxFade { 0% { opacity: 0; } 12%, 80% { opacity: 1; } 100% { opacity: 0; } }
+@media (max-width: 700px) { .live-ip.is-copied::after { display: none; } .fx-ring { width: 80px; height: 80px; margin: -40px 0 0 -40px; } }
+@media (prefers-reduced-motion: reduce) {
+    #play-btn::after, .fx-ring, .fx-flash, .live-card.fx-arrive, .live-card.fx-arrive::before, .live-card.fx-arrive::after { animation: none !important; }
+}
