@@ -31,7 +31,6 @@
       var a = el('a', 'news-card');
       a.href = 'post.html?id=' + encodeURIComponent(p.id);
       a.style.setProperty('--i', i);
-
       var imgWrap = el('div', 'news-card-image');
       var img = el('img');
       img.src = p.image;
@@ -43,9 +42,13 @@
       imgWrap.appendChild(img);
 
       var body = el('div', 'news-card-body');
+<<<<<<< HEAD
       var meta = el('span', 'news-card-date', formatDate(p.date));
       meta.appendChild(el('span', 'read-time', ' · ' + readTime(p.content)));
       body.appendChild(meta);
+=======
+      body.appendChild(el('span', 'news-card-date', formatDate(p.date)));
+>>>>>>> ae9fe395f55f0ebd0d75ad39cdb1b921d41718e1
       body.appendChild(el('h2', 'news-card-title', p.title));
 
       a.appendChild(imgWrap);
@@ -79,9 +82,13 @@
       cover.width = 800;
       cover.height = 450;
       root.appendChild(cover);
+<<<<<<< HEAD
       var pd = el('time', 'post-date', formatDate(post.date));
       pd.appendChild(el('span', 'read-time', ' · ' + readTime(post.content)));
       root.appendChild(pd);
+=======
+      root.appendChild(el('time', 'post-date', formatDate(post.date)));
+>>>>>>> ae9fe395f55f0ebd0d75ad39cdb1b921d41718e1
       root.appendChild(el('h1', 'post-title', post.title));
 
       var content = el('div', 'post-content');
