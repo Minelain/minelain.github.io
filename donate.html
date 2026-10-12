@@ -397,45 +397,8 @@
   });
 })();
 </script>
-<script>
-  // Улучшенная анимация для мобильного меню (идентично index.html)
-  document.addEventListener('DOMContentLoaded', function() {
-    const menuButton = document.querySelector('[data-collapse-toggle="navbar-sticky"]');
-    const menu = document.getElementById('navbar-sticky');
 
-    if (menuButton && menu) {
-      menuButton.addEventListener('click', function() {
-        const isExpanded = this.getAttribute('aria-expanded') === 'true';
-
-        if (isExpanded) {
-          menu.classList.remove('show');
-          setTimeout(() => {
-            menu.style.display = 'none';
-          }, 400);
-        } else {
-          menu.style.display = 'block';
-          setTimeout(() => {
-            menu.classList.add('show');
-          }, 10);
-        }
-        this.setAttribute('aria-expanded', String(!isExpanded));
-      });
-
-      document.addEventListener('click', function(event) {
-        if (!menu.contains(event.target) && !menuButton.contains(event.target)) {
-          if (menu.classList.contains('show')) {
-            menu.classList.remove('show');
-            setTimeout(() => {
-              menu.style.display = 'none';
-            }, 400);
-            menuButton.setAttribute('aria-expanded', 'false');
-          }
-        }
-      });
-    }
-  });
-</script>
-
+<script src="js/menu.js" defer></script>
 <script src="js/winter.js" defer></script>
 <script src="js/snow.js" defer></script>
 <script src="js/dynamic.js" defer></script>

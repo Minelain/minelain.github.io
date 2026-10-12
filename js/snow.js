@@ -28,7 +28,7 @@
   document.body.appendChild(canvas);
 
   var ctx = canvas.getContext('2d');
-  var w = 0, h = 0, dpr = Math.min(window.devicePixelRatio || 1, 2);
+  var w = 0, h = 0, dpr = 1   /* снежинки мягкие — retina-разрешение не нужно, а пикселей в 4 раза меньше */;
   var COUNT = window.innerWidth < 700 ? COUNT_MOBILE : COUNT_DESKTOP;
   var STEP = 1000 / FPS;
 

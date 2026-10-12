@@ -369,3 +369,16 @@ body::after {
 
 /* Карточки соцсетей на странице social.html */
 .social-link { position: relative; overflow: hidden; }
+
+/* ---------- Производительность: пауза декоративных анимаций ----------
+   Класс .is-scrolling ставится на время прокрутки, .is-busy — пока открывается
+   меню (см. dynamic.js и menu.js). Снег притормаживается в snow.js. */
+.is-scrolling body::before, .is-scrolling body::after,
+.is-busy body::before, .is-busy body::after,
+.is-scrolling .aurora, .is-busy .aurora,
+.is-scrolling .style-btn::before, .is-busy .style-btn::before,
+.is-scrolling .buy-penetration-top, .is-busy .buy-penetration-top,
+.is-scrolling .todo-image, .is-busy .todo-image,
+.is-scrolling .live-dot::after, .is-busy .live-dot::after {
+    animation-play-state: paused !important;
+}

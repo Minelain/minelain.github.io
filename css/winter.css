@@ -4,6 +4,7 @@
    уберите <link ... winter.css> и <script ... winter.js> со страниц.
 =========================== */
 :root {
+    --header-bg: #0e1724;
     --ice-1: #e8f7ff;
     --ice-2: #9fe7ff;
     --frost: #0e1724;

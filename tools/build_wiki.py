@@ -84,8 +84,7 @@ def site_chrome():
     news = (ROOT / "news.html").read_text(encoding="utf-8")
     header = re.search(r"<header.*?</header>", news, re.S).group(0)
     svg = re.search(r"<svg width=\"0\".*?</svg>", news, re.S).group(0)
-    menu_js = re.search(r"<script>\s*// Улучшенная анимация.*?</script>", news, re.S).group(0)
-    return header, svg, menu_js
+    return header, svg, ""   # мобильное меню теперь в js/menu.js
 
 
 def fix_header(header, prefix):
@@ -336,6 +335,7 @@ def page_html(cur, idx, pages, body, title, toc, desc, chrome):
   <script src="{wprefix}wiki.js"></script>
   {menu_js}
 
+<script src="{asset}js/menu.js" defer></script>
 <script src="{asset}js/winter.js" defer></script>
 <script src="{asset}js/snow.js" defer></script>
 <script src="{asset}js/dynamic.js" defer></script>

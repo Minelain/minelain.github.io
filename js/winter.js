@@ -6,15 +6,20 @@
   var bar = document.createElement('div');
   bar.className = 'scroll-progress';
   document.body.appendChild(bar);
-  var ticking = false;
+  var ticking = false, maxScroll = 0;
+  function measure() { maxScroll = document.documentElement.scrollHeight - window.innerHeight; }
   function updateBar() {
-    var h = document.documentElement.scrollHeight - window.innerHeight;
-    bar.style.transform = 'scaleX(' + (h > 0 ? Math.min(window.scrollY / h, 1) : 0) + ')';
+    bar.style.transform = 'scaleX(' + (maxScroll > 0 ? Math.min(window.scrollY / maxScroll, 1) : 0) + ')';
     ticking = false;
   }
   window.addEventListener('scroll', function () {
     if (!ticking) { ticking = true; requestAnimationFrame(updateBar); }
   }, { passive: true });
+  // высоту страницы читаем не на каждом кадре прокрутки, а при изменении размеров
+  window.addEventListener('resize', measure, { passive: true });
+  window.addEventListener('load', function () { measure(); updateBar(); });
+  if ('ResizeObserver' in window) new ResizeObserver(measure).observe(document.body);
+  measure();
   updateBar();
 
   /* ---------- Отсчёт до 5-летия (18.02.2027, 00:00 по Москве) ---------- */

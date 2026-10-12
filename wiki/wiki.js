@@ -291,17 +291,34 @@
   topBtn.className = 'wiki-top'; topBtn.type = 'button'; topBtn.setAttribute('aria-label', 'Наверх');
   topBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>';
   document.body.appendChild(topBtn);
-  topBtn.addEventListener('click', function () { window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' }); });
-  var topRaf = 0;
+  // «Наверх»: если до верха далеко, не прокручиваем всю длинную статью (браузер на телефоне
+  // не успевает рисовать её на скорости и «лагает»), а перепрыгиваем почти к началу
+  // и плавно докручиваем последние 1,5 экрана.
+  topBtn.addEventListener('click', function () {
+    var y = window.scrollY, vh = window.innerHeight;
+    if (reduce) { window.scrollTo(0, 0); return; }
+    if (y > vh * 2) window.scrollTo({ top: vh * 1.5, behavior: 'instant' });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+  var topRaf = 0, maxScroll = 0, lastP = -1, lastShow = false, lastSweep = 0;
+  function measure() { maxScroll = document.documentElement.scrollHeight - window.innerHeight; }
+  measure();
+  window.addEventListener('resize', measure, { passive: true });
+  window.addEventListener('load', measure);
+  if ('ResizeObserver' in window) new ResizeObserver(measure).observe(document.body);   // картинки догрузились — высота изменилась
   function onScroll() {
     if (topRaf) return;
     topRaf = requestAnimationFrame(function () {
       topRaf = 0;
-      var max = document.documentElement.scrollHeight - window.innerHeight;
       var y = window.scrollY;
-      topBtn.classList.toggle('show', y > 700);
-      topBtn.style.setProperty('--p', max > 0 ? Math.min(100, Math.round(y / max * 100)) : 0);
-      sweepRv();
+      var show = y > 700;
+      if (show !== lastShow) { lastShow = show; topBtn.classList.toggle('show', show); }
+      if (show) {                                    // кольцо прогресса нужно только пока кнопка видна
+        var p = maxScroll > 0 ? Math.min(100, Math.round(y / maxScroll * 100)) : 0;
+        if (p !== lastP) { lastP = p; topBtn.style.setProperty('--p', p); }
+      }
+      var now = performance.now();
+      if (rvPending.length && now - lastSweep > 120) { lastSweep = now; sweepRv(); }
     });
   }
   window.addEventListener('scroll', onScroll, { passive: true });

@@ -188,49 +188,8 @@
 
   <script>window.WIKI_ROOT = "../wiki/";</script>
   <script src="../wiki/wiki.js"></script>
-  <script>
-    // Улучшенная анимация для мобильного меню
-    document.addEventListener('DOMContentLoaded', function() {
-      const menuButton = document.querySelector('[data-collapse-toggle="navbar-sticky"]');
-      const menu = document.getElementById('navbar-sticky');
 
-      if (menuButton && menu) {
-        menuButton.addEventListener('click', function() {
-          const isExpanded = menu.classList.contains('show');
-          this.setAttribute('aria-expanded', String(!isExpanded));
-
-          if (isExpanded) {
-            // Закрытие меню
-            menu.classList.remove('show');
-            setTimeout(() => {
-              menu.style.display = 'none';
-            }, 400);
-          } else {
-            // Открытие меню
-            menu.style.display = 'block';
-            // Небольшая задержка для запуска анимации
-            setTimeout(() => {
-              menu.classList.add('show');
-            }, 10);
-          }
-        });
-
-        // Закрытие меню при клике вне его
-        document.addEventListener('click', function(event) {
-          if (!menu.contains(event.target) && !menuButton.contains(event.target)) {
-            if (menu.classList.contains('show')) {
-              menu.classList.remove('show');
-              setTimeout(() => {
-                menu.style.display = 'none';
-              }, 400);
-              menuButton.setAttribute('aria-expanded', 'false');
-            }
-          }
-        });
-      }
-    });
-  </script>
-
+<script src="../js/menu.js" defer></script>
 <script src="../js/winter.js" defer></script>
 <script src="../js/snow.js" defer></script>
 <script src="../js/dynamic.js" defer></script>

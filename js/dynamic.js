@@ -18,6 +18,14 @@
     }
   });
 
+  /* ===== Пауза декоративных эффектов на время прокрутки ===== */
+  var rootEl = document.documentElement, scrT = 0;
+  window.addEventListener('scroll', function () {
+    if (!rootEl.classList.contains('is-scrolling')) rootEl.classList.add('is-scrolling');
+    clearTimeout(scrT);
+    scrT = setTimeout(function () { rootEl.classList.remove('is-scrolling'); }, 160);
+  }, { passive: true });
+
   /* ===== 9. Шапка прячется при прокрутке вниз и возвращается вверх ===== */
   var header = $('header');
   if (header) {
