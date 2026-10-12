@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap">
   <link href="../../css/style.css" rel="stylesheet">
   <link rel="shortcut icon" type="image/x-icon" href="../../images/logo.png">
   <title>Способы заработка — Вики MineLain</title>
@@ -180,7 +183,6 @@
   </footer>
 
   <script>window.WIKI_ROOT = "../../wiki/";</script>
-  <script src="../../wiki/search-index.js"></script>
   <script src="../../wiki/wiki.js"></script>
   <script>
     // Улучшенная анимация для мобильного меню
@@ -190,7 +192,8 @@
 
       if (menuButton && menu) {
         menuButton.addEventListener('click', function() {
-          const isExpanded = this.getAttribute('aria-expanded') === 'true';
+          const isExpanded = menu.classList.contains('show');
+          this.setAttribute('aria-expanded', String(!isExpanded));
 
           if (isExpanded) {
             // Закрытие меню
@@ -224,7 +227,6 @@
     });
   </script>
 
-<script src="../../js/flowbite.min.js" defer></script>
 <script src="../../js/winter.js" defer></script>
 <script src="../../js/snow.js" defer></script>
 <script src="../../js/dynamic.js" defer></script>

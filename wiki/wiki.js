@@ -1,31 +1,76 @@
-/* Вики MineLain: поиск, мобильное меню, оглавление, лайтбокс, копирование команд. */
+/* Вики MineLain: бесшовная навигация, поиск, мобильное меню, оглавление, лайтбокс, копирование команд.
+
+   Переходы между страницами вики не перезагружают страницу: шапка, снег и левое меню остаются
+   на месте, подменяется только статья (и оглавление справа). Если что-то пошло не так
+   (нет сети, файл открыт с диска и т.п.) — молча срабатывает обычный переход по ссылке. */
 (function () {
   'use strict';
   var $ = function (s, r) { return (r || document).querySelector(s); };
   var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
   var esc = function (s) { return s.replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  var side = $('#wiki-side');
+  var root = new URL(window.WIKI_ROOT || './', location.href).href;   // абсолютный адрес папки wiki/
+
+  /* ---------- адреса: делаем абсолютными, чтобы они не ломались при смене «глубины» страницы ---------- */
+  function absolutize(scope, base) {
+    $$('a[href], img[src]', scope).forEach(function (el) {
+      var attr = el.hasAttribute('href') ? 'href' : 'src', v = el.getAttribute(attr);
+      if (!v || v.charAt(0) === '#' || /^(?:[a-z][a-z0-9+.-]*:|\/\/)/i.test(v)) return;
+      el.setAttribute(attr, new URL(v, base).href);
+    });
+  }
+  absolutize($('header'), location.href);
+  absolutize(side, location.href);
 
   /* ---------- мобильное меню ---------- */
-  var side = $('#wiki-side'), burger = $('#wiki-burger');
   function setMenu(open) {
     if (!side) return;
     side.classList.toggle('open', open);
     document.body.classList.toggle('wiki-menu-open', open);
-    if (burger) burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+    var b = $('#wiki-burger'); if (b) b.setAttribute('aria-expanded', open ? 'true' : 'false');
   }
-  if (burger) burger.addEventListener('click', function () { setMenu(!side.classList.contains('open')); });
   document.addEventListener('click', function (e) {
-    if (side && side.classList.contains('open') && !side.contains(e.target) && !burger.contains(e.target)) setMenu(false);
+    var b = e.target.closest && e.target.closest('#wiki-burger');
+    if (b) { setMenu(!side.classList.contains('open')); return; }
+    if (side && side.classList.contains('open') && !side.contains(e.target)) setMenu(false);
   });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { setMenu(false); closeLb(); } });
 
-  /* ---------- активный пункт в левом меню виден без прокрутки ---------- */
-  var act = $('.wiki-nav a.active');
-  if (act && side) side.scrollTop = Math.max(0, act.offsetTop - 140);
+  /* ---------- активный пункт в левом меню ---------- */
+  function markActive() {
+    var here = location.pathname.replace(/index\.html$/, '');
+    var act = null;
+    $$('.wiki-nav a').forEach(function (a) {
+      var p = new URL(a.href, location.href).pathname.replace(/index\.html$/, '');
+      var on = p === here;
+      a.classList.toggle('active', on);
+      if (on) { a.setAttribute('aria-current', 'page'); act = a; } else a.removeAttribute('aria-current');
+    });
+    if (act && side && side.scrollHeight > side.clientHeight) {
+      var top = act.offsetTop, h = act.offsetHeight;
+      if (top < side.scrollTop + 40 || top + h > side.scrollTop + side.clientHeight - 40) {
+        side.scrollTo({ top: Math.max(0, top - 140), behavior: reduce ? 'auto' : 'smooth' });
+      }
+    }
+  }
 
-  /* ---------- поиск ---------- */
+  /* ---------- поиск (индекс подгружается при первом обращении к поиску) ---------- */
   var input = $('#wiki-search'), box = $('#wiki-results'), sel = -1;
-  var index = window.WIKI_INDEX || [], root = window.WIKI_ROOT || '';
+  var index = window.WIKI_INDEX || null, indexLoading = null;
+  function loadIndex() {
+    if (index) return Promise.resolve(index);
+    if (indexLoading) return indexLoading;
+    indexLoading = new Promise(function (ok) {
+      var s = document.createElement('script');
+      s.src = root + 'search-index.js';
+      s.onload = function () { index = window.WIKI_INDEX || []; ok(index); };
+      s.onerror = function () { index = []; ok(index); };
+      document.head.appendChild(s);
+    });
+    return indexLoading;
+  }
   function stem(w) { return w.length > 5 ? w.slice(0, -2) : (w.length > 3 ? w.slice(0, -1) : w); }
   function search(q) {
     var words = q.toLowerCase().split(/[^a-zа-яё0-9/_-]+/i).filter(Boolean).map(stem);
@@ -69,9 +114,14 @@
     }).join('') : '<div class="none">Ничего не найдено</div>';
     box.hidden = false; sel = -1;
   }
+  function runSearch() {
+    var q = input.value;
+    if (!q.trim()) { box.hidden = true; return; }
+    loadIndex().then(function () { if (input.value === q) show(search(q), q); });
+  }
   if (input && box) {
-    input.addEventListener('input', function () { show(search(input.value), input.value); });
-    input.addEventListener('focus', function () { if (input.value.trim()) show(search(input.value), input.value); });
+    input.addEventListener('input', runSearch);
+    input.addEventListener('focus', function () { loadIndex(); if (input.value.trim()) runSearch(); });
     input.addEventListener('keydown', function (e) {
       var items = $$('a', box);
       if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
@@ -80,7 +130,7 @@
         sel = (sel + (e.key === 'ArrowDown' ? 1 : -1) + items.length) % items.length;
         items.forEach(function (a, i) { a.classList.toggle('sel', i === sel); });
       } else if (e.key === 'Enter' && items.length) {
-        location.href = (items[sel] || items[0]).href;
+        go((items[sel] || items[0]).href);
       }
     });
     document.addEventListener('click', function (e) { if (!input.parentNode.contains(e.target)) box.hidden = true; });
@@ -89,23 +139,7 @@
     });
   }
 
-  /* ---------- оглавление справа: подсветка текущего раздела ---------- */
-  var links = $$('.wiki-toc a');
-  if (links.length && 'IntersectionObserver' in window) {
-    var map = {};
-    links.forEach(function (a) { map[a.getAttribute('href').slice(1)] = a; });
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (en) {
-        if (en.isIntersecting) {
-          links.forEach(function (a) { a.classList.remove('on'); });
-          var a = map[en.target.id]; if (a) a.classList.add('on');
-        }
-      });
-    }, { rootMargin: '-90px 0px -70% 0px' });
-    $$('.wiki-body h2[id], .wiki-body h3[id]').forEach(function (h) { io.observe(h); });
-  }
-
-  /* ---------- клик по команде копирует её ---------- */
+  /* ---------- toast ---------- */
   var toastEl, toastT;
   function toast(msg) {
     if (!toastEl) { toastEl = document.createElement('div'); toastEl.className = 'toast'; document.body.appendChild(toastEl); }
@@ -113,22 +147,169 @@
     requestAnimationFrame(function () { toastEl.classList.add('show'); });
     clearTimeout(toastT); toastT = setTimeout(function () { toastEl.classList.remove('show'); }, 1800);
   }
-  $$('.wiki-body code').forEach(function (c) {
-    if (c.parentNode.tagName !== 'PRE' && /^\/[a-zа-я]/i.test(c.textContent.trim())) {
-      c.classList.add('cmd'); c.title = 'Нажмите, чтобы скопировать';
-      c.addEventListener('click', function () {
-        var t = c.textContent.trim();
-        (navigator.clipboard ? navigator.clipboard.writeText(t) : Promise.reject()).then(function () { toast('Скопировано: ' + t); }, function () {});
-      });
-    }
-  });
 
-  /* ---------- лайтбокс для скриншотов ---------- */
+  /* ---------- лайтбокс ---------- */
   var lb = document.createElement('div'); lb.className = 'wiki-lightbox';
   lb.innerHTML = '<img alt="">'; document.body.appendChild(lb);
   function closeLb() { lb.classList.remove('open'); }
   lb.addEventListener('click', closeLb);
-  $$('.wiki-fig img, .wiki-body p > img').forEach(function (img) {
-    img.addEventListener('click', function () { $('img', lb).src = img.src; lb.classList.add('open'); });
+
+  /* ---------- то, что нужно заново настраивать после каждой смены статьи ---------- */
+  var io = null;
+  function initPage() {
+    markActive();
+
+    // оглавление справа: подсветка текущего раздела
+    if (io) { io.disconnect(); io = null; }
+    var links = $$('.wiki-toc a');
+    if (links.length && 'IntersectionObserver' in window) {
+      var map = {};
+      links.forEach(function (a) { map[a.getAttribute('href').slice(1)] = a; });
+      io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (en.isIntersecting) {
+            links.forEach(function (a) { a.classList.remove('on'); });
+            var a = map[en.target.id]; if (a) a.classList.add('on');
+          }
+        });
+      }, { rootMargin: '-90px 0px -70% 0px' });
+      $$('.wiki-body h2[id], .wiki-body h3[id]').forEach(function (h) { io.observe(h); });
+    }
+
+    // клик по команде копирует её
+    $$('.wiki-body code').forEach(function (c) {
+      if (c.parentNode.tagName !== 'PRE' && /^\/[a-zа-я]/i.test(c.textContent.trim())) {
+        c.classList.add('cmd'); c.title = 'Нажмите, чтобы скопировать';
+        c.addEventListener('click', function () {
+          var t = c.textContent.trim();
+          (navigator.clipboard ? navigator.clipboard.writeText(t) : Promise.reject()).then(function () { toast('Скопировано: ' + t); }, function () {});
+        });
+      }
+    });
+
+    // скриншоты открываются крупно
+    $$('.wiki-fig img, .wiki-body p > img').forEach(function (img) {
+      img.addEventListener('click', function () { $('img', lb).src = img.src; lb.classList.add('open'); });
+    });
+  }
+
+  /* =====================================================================
+     Бесшовная навигация
+  ===================================================================== */
+  var canSpa = 'fetch' in window && 'DOMParser' in window && 'pushState' in history && location.protocol !== 'file:';
+  var cache = {};           // адрес -> Promise<текст страницы>
+  var busy = 0;             // защита от гонок: учитываем только последний переход
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+
+  function clean(u) { var x = new URL(u, location.href); x.hash = ''; return x.href; }
+  function isWikiPage(u) {
+    return u.origin === location.origin && u.href.indexOf(root) === 0 && /(\.html|\/)$/.test(u.pathname);
+  }
+  function load(url) {
+    var k = clean(url);
+    if (!cache[k]) {
+      cache[k] = fetch(k, { credentials: 'same-origin' }).then(function (r) {
+        if (!r.ok) throw new Error(r.status);
+        return r.text();
+      });
+      cache[k].catch(function () { delete cache[k]; });
+    }
+    return cache[k];
+  }
+  function prefetch(url) { if (canSpa) load(url).catch(function () {}); }
+
+  var loader = document.createElement('div'); loader.className = 'wiki-loader'; document.body.appendChild(loader);
+
+  function go(url, push, state) {
+    var u = new URL(url, location.href);
+    if (!canSpa || !isWikiPage(u)) { location.href = u.href; return; }
+    var token = ++busy, t0 = Date.now();
+    var art = $('.wiki-article');
+    if (push !== false) history.replaceState({ y: window.scrollY }, '');   // запоминаем, где стояли
+    if (art && !reduce) art.classList.add('is-leaving');
+    var slow = setTimeout(function () { loader.classList.add('on'); }, 220);
+
+    Promise.all([load(u.href), new Promise(function (ok) { setTimeout(ok, reduce ? 0 : 130); })]).then(function (res) {
+      if (token !== busy) return;
+      clearTimeout(slow); loader.classList.remove('on');
+      var doc = new DOMParser().parseFromString(res[0], 'text/html');
+      var nArt = $('.wiki-article', doc), nToc = $('.wiki-toc', doc);
+      if (!nArt) throw new Error('no article');
+      var base = clean(u.href);
+      absolutize(nArt, base);
+      if (nToc) absolutize(nToc, base);
+
+      var oldToc = $('.wiki-toc');
+      if (art) art.replaceWith(nArt);
+      if (oldToc && nToc) oldToc.replaceWith(nToc);
+      document.title = doc.title;
+      var md = $('meta[name="description"]', doc), cur = $('meta[name="description"]');
+      if (md && cur) cur.setAttribute('content', md.getAttribute('content'));
+      if (push !== false) history.pushState({ y: 0 }, '', u.href);
+      curPath = location.pathname;
+
+      var hdr = $('header'); if (hdr) hdr.classList.remove('header-hidden');
+      setMenu(false);
+      if (input) { input.value = ''; box.hidden = true; }
+      initPage();
+
+      var target = u.hash && document.getElementById(decodeURIComponent(u.hash.slice(1)));
+      var y = state && typeof state.y === 'number' ? state.y : 0;
+      window.scrollTo({ top: target ? target.getBoundingClientRect().top + window.scrollY - 90 : y, behavior: 'instant' });
+
+      if (!reduce) {
+        nArt.classList.add('is-entering');
+        nArt.addEventListener('animationend', function f(e) {
+          if (e.target !== nArt) return;
+          nArt.classList.remove('is-entering'); nArt.removeEventListener('animationend', f);
+        });
+      }
+      // заранее прогреваем соседние страницы — следующий переход будет мгновенным
+      var idle = window.requestIdleCallback || function (f) { return setTimeout(f, 300); };
+      idle(function () { $$('.wiki-pager a').forEach(function (a) { prefetch(a.href); }); });
+    }).catch(function () {
+      clearTimeout(slow); loader.classList.remove('on');
+      location.href = u.href;      // обычный переход, если что-то не получилось
+    });
+  }
+
+  // перехватываем клики по ссылкам вики (в фазе перехвата — раньше запасного обработчика переходов сайта)
+  document.addEventListener('click', function (e) {
+    if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    var a = e.target.closest && e.target.closest('a[href]');
+    if (!a || (a.target && a.target !== '_self') || a.hasAttribute('download')) return;
+    var u; try { u = new URL(a.href, location.href); } catch (_) { return; }
+    if (!isWikiPage(u)) return;
+    if (u.pathname === location.pathname && u.search === location.search) {          // эта же страница
+      if (u.hash) return;                                                            // якорь — обычное поведение
+      e.preventDefault(); setMenu(false); window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
+      return;
+    }
+    e.preventDefault();
+    go(u.href, true);
+  }, true);
+
+  // предзагрузка при наведении / касании
+  function hint(e) {
+    var a = e.target.closest && e.target.closest('a[href]');
+    if (!a) return;
+    var u; try { u = new URL(a.href, location.href); } catch (_) { return; }
+    if (isWikiPage(u) && u.pathname !== location.pathname) prefetch(u.href);
+  }
+  document.addEventListener('mouseover', hint, { passive: true });
+  document.addEventListener('touchstart', hint, { passive: true });
+  document.addEventListener('focusin', hint);
+
+  var curPath = location.pathname;
+  window.addEventListener('popstate', function (e) {
+    if (location.pathname === curPath) return;        // изменился только #якорь — браузер справится сам
+    go(location.href, false, e.state);
   });
+
+  initPage();
+  if (canSpa) {
+    history.replaceState({ y: window.scrollY }, '');
+    var idle0 = window.requestIdleCallback || function (f) { return setTimeout(f, 600); };
+    idle0(function () { $$('.wiki-pager a').forEach(function (a) { prefetch(a.href); }); });
+  }
 })();

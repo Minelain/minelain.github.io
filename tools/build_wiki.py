@@ -274,6 +274,9 @@ def page_html(cur, idx, pages, body, title, toc, desc, chrome):
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap">
   <link href="{asset}css/style.css" rel="stylesheet">
   <link rel="shortcut icon" type="image/x-icon" href="{asset}images/logo.png">
   <title>{html.escape(full_title)}</title>
@@ -330,11 +333,9 @@ def page_html(cur, idx, pages, body, title, toc, desc, chrome):
   </footer>
 
   <script>window.WIKI_ROOT = "{wprefix}";</script>
-  <script src="{wprefix}search-index.js"></script>
   <script src="{wprefix}wiki.js"></script>
   {menu_js}
 
-<script src="{asset}js/flowbite.min.js" defer></script>
 <script src="{asset}js/winter.js" defer></script>
 <script src="{asset}js/snow.js" defer></script>
 <script src="{asset}js/dynamic.js" defer></script>

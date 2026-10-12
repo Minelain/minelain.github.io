@@ -310,3 +310,33 @@ header.header-hidden ~ main .wiki-toc { top: 20px; }
     .wiki-pager .next { grid-column: 1; }
 }
 body.wiki-menu-open::after { content: ""; position: fixed; inset: 0; z-index: 55; background: rgba(0,0,0,.55); animation: none; opacity: 1; }
+
+
+/* ---------- Бесшовная смена страниц ---------- */
+.wiki-article { transition: opacity .13s ease, transform .13s ease; }
+.wiki-article.is-leaving { opacity: 0; transform: translateY(6px); }
+.wiki-article.is-entering { animation: wkIn .38s cubic-bezier(.22,1,.36,1) both; }
+.wiki-article.is-entering .wiki-title::after { animation: wkLine .6s .1s cubic-bezier(.22,1,.36,1) both; }
+.wiki-article.is-entering .wiki-body > * { animation: wkUp .5s cubic-bezier(.22,1,.36,1) both; }
+.wiki-article.is-entering .wiki-body > :nth-child(2) { animation-delay: .04s; }
+.wiki-article.is-entering .wiki-body > :nth-child(3) { animation-delay: .08s; }
+.wiki-article.is-entering .wiki-body > :nth-child(4) { animation-delay: .12s; }
+.wiki-article.is-entering .wiki-body > :nth-child(n+5) { animation-delay: .16s; }
+.wiki-toc { animation: wkFade .4s ease both; }
+@keyframes wkIn   { from { opacity: 0; transform: translateY(10px); } }
+@keyframes wkUp   { from { opacity: 0; transform: translateY(14px); } }
+@keyframes wkFade { from { opacity: 0; } }
+@keyframes wkLine { from { transform: scaleX(0); } }
+.wiki-title::after { transform-origin: 0 50%; }
+
+/* тонкая полоска, если страница грузится дольше обычного */
+.wiki-loader {
+    position: fixed; z-index: 120; top: 0; left: 0; right: 0; height: 3px;
+    background: var(--wk-grad); transform: scaleX(0); transform-origin: 0 50%; opacity: 0; pointer-events: none;
+}
+.wiki-loader.on { opacity: 1; animation: wkLoad 1.4s cubic-bezier(.3,.1,.2,1) forwards; }
+@keyframes wkLoad { to { transform: scaleX(.9); } }
+
+@media (prefers-reduced-motion: reduce) {
+    .wiki-article, .wiki-toc, .wiki-article.is-entering, .wiki-article.is-entering * { transition: none !important; animation: none !important; }
+}

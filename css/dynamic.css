@@ -91,8 +91,8 @@ body::after {
     animation: btnShine 4.5s ease-in-out infinite;
 }
 @keyframes btnShine {
-    0%, 55% { left: -60%; }
-    100%    { left: 130%; }
+    0%, 55% { transform: skewX(-20deg) translate3d(0, 0, 0); }
+    100%    { transform: skewX(-20deg) translate3d(475%, 0, 0); }   /* то же, что left: -60% → 130%, но без перерасчёта вёрстки */
 }
 .first-section .buy-penetration-top {
     animation: gradientShift 3s ease infinite, btnPulse 2.4s ease-in-out infinite;
@@ -290,6 +290,18 @@ body::after {
     .live-card .live-ip { margin-top: 14px; padding: 14px 16px; font-size: 1.15rem; }
     .live-online b { font-size: 2.1rem; }
     .typed-line { font-size: 1.1rem; }
+}
+
+/* ---------- Облегчение для телефонов и тачскринов ----------
+   Внешний вид тот же, но убираем то, что перерисовывается каждый кадр
+   на основном потоке (сдвиг фона градиента, пульсация box-shadow),
+   и останавливаем мерцание звёзд/сияния — это три полноэкранных слоя. */
+@media (hover: none), (max-width: 768px) {
+    .style-btn,
+    .first-section .buy-penetration-top { animation: none !important; }
+    body::before { animation: none; opacity: .5; }
+    body::after  { animation: none; opacity: .45; }
+    .first-section .aurora { animation: none; opacity: .9; will-change: auto; }
 }
 
 @media (prefers-reduced-motion: reduce) {
