@@ -8,8 +8,11 @@
   /* ===== 8. Подсветка пункта меню (переходы — в js/transition.js) ===== */
   var here = location.pathname.split('/').pop() || 'index.html';
   if (here === 'post.html') here = 'news.html';
+  var inWiki = /\/wiki(\/|$)/.test(location.pathname);
   $$('#navbar-sticky a').forEach(function (a) {
-    var href = (a.getAttribute('href') || '').split('?')[0].split('/').pop();
+    var raw = (a.getAttribute('href') || '').split('?')[0];
+    if (inWiki) { if (/(^|\/)wiki\/?$/.test(raw)) a.classList.add('nav-active'); return; }
+    var href = raw.split('/').pop();
     if ((href === here) || (here === 'index.html' && /minelain\.github\.io\/?$/.test(a.getAttribute('href') || ''))) {
       a.classList.add('nav-active');
     }

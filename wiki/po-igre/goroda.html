@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="../../css/style.css" rel="stylesheet">
+  <link rel="shortcut icon" type="image/x-icon" href="../../images/logo.png">
+  <title>Города — Вики MineLain</title>
+  <meta name="description" content="Встаньте на место будущего города и введите команду /l create &lt;Название&gt; . Требования для создания: 16 досок, 32 булыжника, 6 хлеба .">
+  <meta property="og:title" content="Города — Вики MineLain">
+  <meta property="og:description" content="Встаньте на место будущего города и введите команду /l create &lt;Название&gt; . Требования для создания: 16 досок, 32 булыжника, 6 хлеба .">
+  <link rel="stylesheet" href="../../css/normalize.css">
+  <link rel="stylesheet" href="../../css/style.min.css">
+  <link rel="stylesheet" href="../../css/custom.css">
+  <link rel="stylesheet" href="../../css/winter.css">
+  <link rel="stylesheet" href="../../css/dynamic.css">
+  <link rel="stylesheet" href="../../css/transition.css">
+  <link rel="stylesheet" href="../../css/wiki.css">
+  <script src="../../js/transition.js"></script>
+</head>
+
+<body class="min-w-[400px]" style="background-color: #212121;">
+
+  <svg width="0" height="0" style="position: absolute; width: 0; height: 0; overflow: hidden;">
+    <defs>
+      <linearGradient id="playGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#00CED1" />
+        <stop offset="50%" stop-color="#40E0D0" />
+        <stop offset="100%" stop-color="#00BFFF" />
+      </linearGradient>
+    </defs>
+  </svg>
+
+  <header class=" shadow-xl " style="background-color: #212121;">
+  <nav class="font-inter font-semibold px-2 md:px-2 sm:px-4 lg:py-0 py-2.5  w-full z-20 top-0 left-0">
+    <div class="container flex flex-wrap items-center justify-between mx-auto">
+      <a href="https://minelain.github.io/" class="flex items-center">
+        <img src="../../images/logo.png" class="logo-image" alt="Logo">
+      </a>
+
+      <div class="flex lg:order-2 items-center space-x-2 sm:space-x-3">
+        <a href="https://boosty.to/sleepingmag" class="inline-flex items-center justify-center h-[42px] text-white font-montserrat font-bold text-xs sm:text-sm px-4 rounded-lg transition-all duration-200 shadow-md hover:opacity-90" style="background: linear-gradient(135deg, #00CED1 0%, #40E0D0 50%, #00BFFF 100%);">
+          <svg class="w-5 h-5 mr-2 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z"></path>
+          </svg>
+          Пожертвования
+        </a>
+
+        <button data-collapse-toggle="navbar-sticky" type="button" class="inline-flex items-center justify-center w-[42px] h-[42px] p-2 text-sm rounded-lg lg:hidden focus:outline-none focus:ring-2 text-gray-400 hover:bg-admin-black focus:ring-gray-700" aria-controls="navbar-sticky" aria-expanded="false">
+          <svg class="w-6 h-6" aria-hidden="true" fill="url(#playGradient)" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path>
+          </svg>
+        </button>
+      </div>
+
+      <div class="items-center justify-between mx-auto lg:pr-12 hidden w-full lg:static lg:top-12 lg:left-0 px-3 lg:flex lg:w-auto lg:order-1" id="navbar-sticky">
+        <ul class="flex flex-col font-montserrat font-normal px-4 py-5 mt-4 border rounded-lg lg:flex-row lg:space-x-6 lg:mt-0 lg:text-base lg:font-medium lg:border-0 bg-admin-black border-gray-700">
+          <li class="relative item-menu">
+            <a href="https://minelain.github.io/" class="text-white rounded-lg lg:py-2.5 hover:text-white duration-100 transition-all flex items-center px-5 py-4">
+              <svg class="w-6 h-6 lg:w-5 lg:h-5 mr-3 lg:mr-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="url(#playGradient)" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.592 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"></path>
+              </svg>
+              Главная
+            </a>
+          </li>
+          <li>
+            <a href="../../news.html" class="text-white rounded-lg lg:py-2.5 hover:text-white duration-100 transition-all flex items-center px-5 py-4">
+              <svg class="w-6 h-6 lg:w-5 lg:h-5 mr-3 lg:mr-2 flex-shrink-0" fill="none" stroke="url(#playGradient)" viewBox="0 0 24 24" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 01-2.25 2.25M16.5 7.5V18a2.25 2.25 0 002.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 002.25 2.25h13.5M6 7.5h3v3H6v-3z"></path>
+              </svg>
+              Новости
+            </a>
+          </li>
+          <li>
+            <a href="../../wiki/" class="text-white rounded-lg lg:py-2.5 hover:text-white duration-100 transition-all flex items-center px-5 py-4">
+              <svg class="w-6 h-6 lg:w-5 lg:h-5 mr-3 lg:mr-2 flex-shrink-0" fill="none" stroke="url(#playGradient)" viewBox="0 0 24 24" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-15.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-15.25v15.25"></path>
+              </svg>
+              Вики
+            </a>
+          </li>
+          <li>
+            <a href="http://minelain.zapto.org:8080" class="text-white rounded-lg lg:py-2.5 hover:text-white duration-100 transition-all flex items-center px-5 py-4">
+              <svg class="w-6 h-6 lg:w-5 lg:h-5 mr-3 lg:mr-2 flex-shrink-0" fill="none" stroke="url(#playGradient)" viewBox="0 0 24 24" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 6.75V15m6-6v8.25m.503 3.498l4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 00-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0z"></path>
+              </svg>
+              Карта
+            </a>
+          </li>
+          <li>
+            <a href="/offline-map.html" class="text-white rounded-lg lg:py-2.5 hover:text-white duration-100 transition-all flex items-center px-5 py-4">
+              <svg class="w-6 h-6 lg:w-5 lg:h-5 mr-3 lg:mr-2 flex-shrink-0" fill="none" stroke="url(#playGradient)" viewBox="0 0 24 24" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 6.75V15m6-6v8.25m.503 3.498l4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 00-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0z"></path>
+              </svg>
+              Оффлайн карта(не работает)
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>
+
+  <main class="wiki-page">
+    <div class="wiki-layout">
+      <aside class="wiki-side" id="wiki-side">
+        <div class="wiki-search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <input id="wiki-search" type="search" placeholder="Поиск по вики…" autocomplete="off" aria-label="Поиск по вики">
+          <div class="wiki-results" id="wiki-results" hidden></div>
+        </div>
+        <nav class="wiki-nav">
+<div class="wiki-group">
+<a href="../">О проекте</a>
+<a href="../pravila.html">Правила</a>
+</div>
+<div class="wiki-group">
+<div class="wiki-group-title">Начать игру</div>
+<a href="../nachat-igru/quickstart.html">Быстрый старт</a>
+<a href="../nachat-igru/kak-zajti.html">Как зайти на сервер</a>
+<a href="../nachat-igru/konkursy.html">Конкурсы</a>
+<a href="../nachat-igru/pomoshch.html">Помощь серверу</a>
+</div>
+<div class="wiki-group">
+<div class="wiki-group-title">По игре</div>
+<a href="../po-igre/goroda.html" class="active" aria-current="page">Города</a>
+<a href="../po-igre/nacii.html">Нации</a>
+<a href="../po-igre/voiny.html">Система войн</a>
+<a href="../po-igre/epokhi.html">Эпохи</a>
+<a href="../po-igre/viktorina.html">Викторина - ответы</a>
+<a href="../po-igre/zarabotok.html">Способы заработка</a>
+<a href="../po-igre/alkogol.html">Алкоголь</a>
+</div>
+<div class="wiki-group">
+<div class="wiki-group-title">Лор</div>
+<a href="../lor/gazeta-12-sezon.html">Газета:12 сезон Minecampff</a>
+</div>
+        </nav>
+      </aside>
+
+      <article class="wiki-article">
+        <button class="wiki-burger" id="wiki-burger" type="button" aria-controls="wiki-side" aria-expanded="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
+          Разделы вики
+        </button>
+        <div class="wiki-crumbs">Вики · По игре</div>
+        <h1 class="wiki-title">Города</h1>
+        <div class="wiki-body">
+
+<h3 id="как-создать-город-и-управлять-им">Как создать город и управлять им?<a aria-label="Ссылка на раздел" class="anchor" href="#как-создать-город-и-управлять-им">#</a></h3>
+<h4 id="создание-города"><strong>Создание города</strong></h4>
+<p>Встаньте на место будущего города и введите команду <code>/l create &lt;Название&gt;</code>.<br/>
+Требования для создания: <strong>16 досок, 32 булыжника, 6 хлеба</strong>.</p>
+<h4 id="расширение-территории">Расширение территории</h4>
+<p>Увеличить площадь города можно тремя способами:</p>
+<ul>
+<li>Вручную по чанкам: Нажмите F3 + G для отображения границ. Зайдите в нужный чанк и введите команду <code>/l claim</code>.</li>
+</ul>
+<figure class="wiki-fig"><img alt="" decoding="async" loading="lazy" src="https://i.ibb.co/twyMDj7t/Screenshot-20260715-200037.png"/></figure>
+<ul>
+<li>Выделением зоны: Введите <code>/l selection</code> и выделите два противоположных угла нужной территории, затем пропишите <code>/l claim</code>. Если хотите заприватить квадрат по всей высоте мира, предварительно используйте команду <code>/l selection expand</code>.</li>
+<li>Через интерактивную карту (Только для Java-игроков): Введите <code>/l map</code> и приватьте нужные чанки левым кликом мыши (ЛКМ).</li>
+</ul>
+<figure class="wiki-fig"><img alt="" decoding="async" loading="lazy" src="https://i.ibb.co/dJjqnfWN/Screenshot-20260715-195443.png"/></figure>
+<h4 id="управление-участниками-и-ролями"><strong>Управление участниками и ролями</strong></h4>
+<p>Роль определяет права игрока на территории. Быстрое управление осуществляется командами:</p>
+<ul>
+<li>Добавить игрока: <code>/l trust &lt;Ник&gt;</code></li>
+<li>Удалить игрока: <code>/l untrust &lt;Ник&gt;</code></li>
+<li>Изменить роль: <code>/l setrole &lt;Ник&gt; * &lt;Роль&gt;</code></li>
+</ul>
+<h4 id="экономика-и-налоги"><strong>Экономика и налоги</strong></h4>
+<p>Город ежедневно выплачивает серверу налог — 2 монеты за каждый заприваченный чанк (текущее количество чанков можно посмотреть в статистике города). Чтобы покрывать эти расходы, вы можете установить внутренний налог для жителей.</p>
+<ul>
+<li>Пополнить казну города: <code>/l deposit &lt;сумма&gt;</code></li>
+<li>Снять деньги из казны: <code>/l withdraw &lt;сумма&gt;</code></li>
+</ul>
+<h4 id="интерфейс-управления-городом-настройки-флаги-и-налоги"><strong>Интерфейс управления городом (Настройки, Флаги и Налоги)</strong></h4>
+<p>Детальная настройка города (включая защиту от чужаков, ПВП и внутренние налоги) происходит через графический интерфейс. <strong>/l</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th><strong>Раздел</strong></th>
+<th><strong>Путь в меню для Java Edition</strong></th>
+<th><strong>Путь в меню для Bedrock Edition</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Участники (Добавление/Удаление)</td>
+<td><code>Управление игроками &gt; Участники</code> <em>(ЛКМ по зеленому/красному бетону)</em></td>
+<td><code>Управление игроками</code> &gt; <code>Участники</code></td>
+</tr>
+<tr>
+<td>Роли (Настройка прав жителей)</td>
+<td><code>Роли</code></td>
+<td><code>Настройки</code> &gt; <code>Роли области</code></td>
+</tr>
+<tr>
+<td>Права</td>
+<td><code>Природные настройки</code> <em>(настройка прав через ЛКМ)</em></td>
+<td><code>Настройки</code> &gt; <code>Флаги области</code></td>
+</tr>
+<tr>
+<td>Налоги (Сбор монет с участников)</td>
+<td><code>Налоги</code></td>
+<td><code>Настройки</code> &gt; <code>Налоги области</code></td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="аренда"><strong>Аренда.</strong></h4>
+<p>Приваты очень настраиваемые и вы можете ограничить весь доступ к привату даже жителям, дав им возможность взаимодействовать только в определенных участках за аренду.<br/>
+Пропишите <code>/l menu here</code>, или же просто <code>/l</code>, выберите меню аренды. Установите цену, время и другие. Подвердите предложение и любой житель сможет купить землю в аренду!</p>
+<h2 id="команды">Команды<a aria-label="Ссылка на раздел" class="anchor" href="#команды">#</a></h2>
+<h3 id="информационные-команды"><strong>Информационные команды</strong><a aria-label="Ссылка на раздел" class="anchor" href="#информационные-команды">#</a></h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Команда</th>
+<th>Описание</th>
+<th>Пример</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/l help</code></td>
+<td>Помощь по командам</td>
+<td><code>---</code></td>
+</tr>
+<tr>
+<td><code>/l \| /l menu</code></td>
+<td>Интерактивное меню управления городом</td>
+<td><code>---</code></td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="команды-доступные-любому-игроку">Команды доступные любому игроку<a aria-label="Ссылка на раздел" class="anchor" href="#команды-доступные-любому-игроку">#</a></h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th><strong>Команда</strong></th>
+<th><strong>Описание</strong></th>
+<th><strong>Пример</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/l create &lt;Название&gt;</code></td>
+<td>Создать город</td>
+<td><code>/l create Киев</code></td>
+</tr>
+<tr>
+<td><code>/l list</code></td>
+<td>Список городов</td>
+<td><code>---</code></td>
+</tr>
+<tr>
+<td><code>/l info &lt;Название&gt;</code></td>
+<td>Посмотреть информацию о городе</td>
+<td><code>/l info Москва</code></td>
+</tr>
+<tr>
+<td><code>/l balance &lt;Название&gt;</code></td>
+<td>Посмотреть баланс города</td>
+<td><code>/l balance Париж</code></td>
+</tr>
+<tr>
+<td><code>/l map</code></td>
+<td>Карта занятойсти 54 чанков вокруг вас</td>
+<td><code>---</code></td>
+</tr>
+<tr>
+<td><code>/l accept &lt;Название&gt;</code></td>
+<td>Принять приглашение на вступление в город</td>
+<td><code>/l accept Одесса</code></td>
+</tr>
+<tr>
+<td><code>/l deny &lt;Название&gt;</code></td>
+<td>Отклонить приглашение на вступление в город</td>
+<td><code>/l deny Кишинев</code></td>
+</tr>
+<tr>
+<td><code>/l invites</code></td>
+<td>Посмотреть список приглашений</td>
+<td><code>---</code></td>
+</tr>
+<tr>
+<td><code>/view</code></td>
+<td>Визуализация границ городов через частицы</td>
+<td><code>---</code></td>
+</tr>
+<tr>
+<td><code>/l player &lt;Ник&gt;</code></td>
+<td>Выводит информацию о игроке</td>
+<td><code>---</code></td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="команды-доступные-жителю">Команды доступные жителю<a aria-label="Ссылка на раздел" class="anchor" href="#команды-доступные-жителю">#</a></h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th><strong>Команда</strong></th>
+<th><strong>Описание</strong></th>
+<th><strong>Пример</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/l leave &lt;Название/here&gt;</code></td>
+<td>Покинуть город по названию либо здесь</td>
+<td><code>/l leave Краков</code></td>
+</tr>
+<tr>
+<td><code>/l deposit &lt;Сумма&gt;</code></td>
+<td>Положить деньги на баланс</td>
+<td><code>/l deposit 100</code></td>
+</tr>
+<tr>
+<td><code>/n</code></td>
+<td>Посмотреть меню нации города</td>
+<td><code>---</code></td>
+</tr>
+<tr>
+<td><code>/l spawn</code></td>
+<td>Телепорт на спавн города</td>
+<td><code>---</code></td>
+</tr>
+<tr>
+<td><code>/l chat</code></td>
+<td>Отключает глобал чат и пишет сообщение всем игрокам из вашего поселения</td>
+<td><code>/l chat Привет мир!</code></td>
+</tr>
+<tr>
+<td><code>/l rent list</code></td>
+<td>Посмотреть участки выставленные в аренду</td>
+<td><code>---</code></td>
+</tr>
+<tr>
+<td><code>/l rent cancel</code></td>
+<td>Отменить аренду арендованной земли</td>
+<td><code>---</code></td>
+</tr>
+<tr>
+<td><code>/l rent info</code></td>
+<td>Посмотреть информацию об аренде на земле где вы стоите</td>
+<td><code>---</code></td>
+</tr>
+<tr>
+<td><code>/l upkeep</code></td>
+<td>Посмотреть плату за содержание города</td>
+<td><code>---</code></td>
+</tr>
+<tr>
+<td><code>/l taxes</code></td>
+<td>Посмотреть налог на жителей внутри города</td>
+<td><code>---</code></td>
+</tr>
+<tr>
+<td><code>/l menu inbox</code></td>
+<td>Посмотреть почту города</td>
+<td><code>---</code></td>
+</tr>
+<tr>
+<td><code>/l level</code></td>
+<td>Посмотреть прогресс развития города</td>
+<td><code>---</code></td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="команды-доступные-князю">Команды доступные князю<a aria-label="Ссылка на раздел" class="anchor" href="#команды-доступные-князю">#</a></h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th><code>/l rename &lt;new название&gt;</code></th>
+<th>Изменить название города</th>
+<th><code>/l rename Белгород</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/l setowner &lt;Ник&gt;</code></td>
+<td>Передать титул князя жителю</td>
+<td><code>/l setowner splaii</code></td>
+</tr>
+<tr>
+<td><code>/l withdraw &lt;Сумма&gt;</code></td>
+<td>Снять деньги с баланса города</td>
+<td><code>/l withdraw 100</code></td>
+</tr>
+<tr>
+<td><code>/l claim</code></td>
+<td>Заприватить чанк</td>
+<td><code>---</code></td>
+</tr>
+<tr>
+<td><p><code>/l unclaim</code></p><p><br/></p></td>
+<td>Расприватить чанк</td>
+<td><code>---</code></td>
+</tr>
+<tr>
+<td><code>/l delete &lt;Название&gt;</code></td>
+<td>Удалить город</td>
+<td><code>/l delete Пекин</code></td>
+</tr>
+<tr>
+<td><code>/l setspawn</code></td>
+<td>Изменить место спавна в городе</td>
+<td><code>---</code></td>
+</tr>
+<tr>
+<td><code>/l trust &lt;Ник&gt;</code></td>
+<td>Пригласить игрока в город</td>
+<td><code>/l trust splaii</code></td>
+</tr>
+<tr>
+<td><code>/l untrust &lt;Ник&gt;</code></td>
+<td>Выгнать игрока с города</td>
+<td><code>/l untrust splaii</code></td>
+</tr>
+<tr>
+<td><code>/l ban &lt;Ник&gt; &lt;Области&gt;</code></td>
+<td>Запрещает игроку находиться на данной территории или в определенной зоне.</td>
+<td><code>/l ban splaii</code></td>
+</tr>
+<tr>
+<td><code>/l unban &lt;Ник&gt; &lt;Область&gt;</code></td>
+<td>Снимает бан игрока.</td>
+<td><code>/l unban splaii</code></td>
+</tr>
+<tr>
+<td><code>/l relations</code></td>
+<td>Управляет отношениями с союзниками и врагами.</td>
+<td><code>---</code></td>
+</tr>
+<tr>
+<td><code>/l rent remove tenant</code></td>
+<td><p>Удаляет текущего арендатора из зоны, в которой вы находитесь. Это может потребовать выплаты компенсации.</p></td>
+<td><code>---</code></td>
+</tr>
+<tr>
+<td><code>/l menu</code></td>
+<td>Полный доступ к управлению городом через меню</td>
+<td><code>---</code></td>
+</tr>
+<tr>
+<td>/l setrole &lt;ник&gt; \<area/> &lt;роль&gt;</td>
+<td>Изменить роль игроку</td>
+<td><code>---</code></td>
+</tr>
+</tbody>
+</table></div>
+<p><br/></p>
+        </div>
+        <div class="wiki-pager"><a class="prev" href="../nachat-igru/pomoshch.html"><span>← Назад</span><b>Помощь серверу</b></a><a class="next" href="../po-igre/nacii.html"><span>Дальше →</span><b>Нации</b></a></div>
+      </article>
+
+      <aside class="wiki-toc" id="wiki-toc"><div class="wiki-toc-title">На этой странице</div><a class="lvl3" href="#как-создать-город-и-управлять-им">Как создать город и управлять им?</a><a class="lvl2" href="#команды">Команды</a><a class="lvl3" href="#информационные-команды">Информационные команды</a><a class="lvl3" href="#команды-доступные-любому-игроку">Команды доступные любому игроку</a><a class="lvl3" href="#команды-доступные-жителю">Команды доступные жителю</a><a class="lvl3" href="#команды-доступные-князю">Команды доступные князю</a></aside>
+    </div>
+  </main>
+
+  <footer>
+  </footer>
+
+  <script>window.WIKI_ROOT = "../../wiki/";</script>
+  <script src="../../wiki/search-index.js"></script>
+  <script src="../../wiki/wiki.js"></script>
+  <script>
+    // Улучшенная анимация для мобильного меню
+    document.addEventListener('DOMContentLoaded', function() {
+      const menuButton = document.querySelector('[data-collapse-toggle="navbar-sticky"]');
+      const menu = document.getElementById('navbar-sticky');
+
+      if (menuButton && menu) {
+        menuButton.addEventListener('click', function() {
+          const isExpanded = this.getAttribute('aria-expanded') === 'true';
+
+          if (isExpanded) {
+            // Закрытие меню
+            menu.classList.remove('show');
+            setTimeout(() => {
+              menu.style.display = 'none';
+            }, 400);
+          } else {
+            // Открытие меню
+            menu.style.display = 'block';
+            // Небольшая задержка для запуска анимации
+            setTimeout(() => {
+              menu.classList.add('show');
+            }, 10);
+          }
+        });
+
+        // Закрытие меню при клике вне его
+        document.addEventListener('click', function(event) {
+          if (!menu.contains(event.target) && !menuButton.contains(event.target)) {
+            if (menu.classList.contains('show')) {
+              menu.classList.remove('show');
+              setTimeout(() => {
+                menu.style.display = 'none';
+              }, 400);
+              menuButton.setAttribute('aria-expanded', 'false');
+            }
+          }
+        });
+      }
+    });
+  </script>
+
+<script src="../../js/flowbite.min.js" defer></script>
+<script src="../../js/winter.js" defer></script>
+<script src="../../js/snow.js" defer></script>
+<script src="../../js/dynamic.js" defer></script>
+</body>
+</html>
