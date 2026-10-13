@@ -1,4 +1,14 @@
 {
-  "v": 1,
-  "posts": []
+  "posts": [
+    {
+      "author": "@StonyFray",
+      "date": "2026-10-13",
+      "excerpt": "А как же",
+      "id": "tg-22-1791883412",
+      "image": "images/news/news-1.webp",
+      "read": 1,
+      "title": "А как же"
+    }
+  ],
+  "v": 1
 }
