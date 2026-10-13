@@ -336,9 +336,11 @@
   }
 
   /* ===== 6. 3D-наклон карточек ===== */
+  // bindTilt доступен снаружи: news.js вешает наклон на карточки, добавленные после загрузки JSON
+  window.MineLainTilt = function () {};
   if (canHover && !reduce) {
     var tiltSel = '.todo-item, .four-section .card, .news-card, .six-section .item-card-link, .social-link';
-    $$(tiltSel).forEach(function (el) {
+    var bindTilt = function (list) { Array.prototype.forEach.call(list, function (el) {
       var glare = document.createElement('span'); glare.className = 'tilt-glare'; el.appendChild(glare);
       var raf = 0, ev;
       el.addEventListener('pointerenter', function () {
@@ -362,7 +364,9 @@
         el.classList.remove('is-tilting');
         el.style.transition = ''; el.style.transform = '';
       });
-    });
+    }); };
+    window.MineLainTilt = bindTilt;
+    bindTilt($$(tiltSel));
   }
 
   /* ===== 7. Заголовки секций проявляются при прокрутке ===== */
