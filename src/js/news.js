@@ -8,9 +8,19 @@
 
   var DEFAULT_IMAGE = 'images/news/news-1.webp';
   var ID_RE = /^[A-Za-z0-9_-]{1,80}$/;
+  var GALLERY_SRC_RE = /^images\/news\/[A-Za-z0-9_-]{1,80}\/\d{1,3}\.avif$/;
   var staticPosts = (window.NEWS || []).slice();
+  // Закрепляются только посты из news-data.js (их пишет владелец сайта); флаг "pinned" в данных бота игнорируется.
+  var pinnedIds = {};
+  staticPosts.forEach(function (p) { if (p.pinned === true) pinnedIds[p.id] = 1; });
 
-  function byDateDesc(a, b) { return a.date < b.date ? 1 : a.date > b.date ? -1 : 0; }
+  function isPinned(p) { return pinnedIds[p.id] === 1; }
+  // Закреплённые — первыми, остальные — по дате (новые выше).
+  function byDateDesc(a, b) {
+    var pa = isPinned(a), pb = isPinned(b);
+    if (pa !== pb) return pa ? -1 : 1;
+    return a.date < b.date ? 1 : a.date > b.date ? -1 : 0;
+  }
 
   function formatDate(iso) {
     var d = new Date(iso + 'T00:00:00');
@@ -68,6 +78,105 @@
     });
   }
 
+  /* Значок «закреплено» (булавка) слева сверху на обложке карточки */
+  function pinBadge() {
+    var ns = 'http://www.w3.org/2000/svg';
+    var b = el('span', 'news-pin');
+    b.setAttribute('role', 'img');
+    b.setAttribute('aria-label', 'Закреплено');
+    b.title = 'Закреплено';
+    var svg = document.createElementNS(ns, 'svg');
+    svg.setAttribute('viewBox', '0 0 24 24');
+    svg.setAttribute('width', '18');
+    svg.setAttribute('height', '18');
+    svg.setAttribute('aria-hidden', 'true');
+    var path = document.createElementNS(ns, 'path');
+    path.setAttribute('fill', 'currentColor');
+    path.setAttribute('d', 'M16 3a1 1 0 0 1 .7 1.7L15.4 6l.9 5.1 2.3 2.3a1 1 0 0 1-.7 1.7H13v5.2a1 1 0 0 1-2 0v-5.2H6.1a1 1 0 0 1-.7-1.7L7.7 11l.9-5L7.3 4.7A1 1 0 0 1 8 3h8z');
+    svg.appendChild(path);
+    b.appendChild(svg);
+    return b;
+  }
+
+  /* ---------- Галерея скриншотов в конце поста ----------
+     post.gallery = [{src: "images/news/<id>/2.avif", w, h}] — все скриншоты, кроме первого (он — обложка).
+     Данные недоверенные: адрес принимается только вида images/news/<id>/<n>.avif, всё строится через DOM. */
+  function galleryItems(list) {
+    var out = [];
+    if (!Array.isArray(list)) return out;
+    list.forEach(function (it) {
+      if (!it || typeof it.src !== 'string' || !GALLERY_SRC_RE.test(it.src)) return;
+      var w = Number(it.w), h = Number(it.h);
+      out.push({ src: it.src, w: w > 0 && w < 20000 ? Math.round(w) : 16, h: h > 0 && h < 20000 ? Math.round(h) : 9 });
+    });
+    return out.slice(0, 20);
+  }
+
+  function buildLightbox(items, title) {
+    var dlg = el('dialog', 'news-lightbox');
+    dlg.setAttribute('aria-label', 'Просмотр скриншота');
+    var img = el('img', 'news-lightbox-img');
+    var cap = el('div', 'news-lightbox-cap');
+    function btn(cls, label, glyph) {
+      var b = el('button', 'news-lightbox-btn ' + cls, glyph);
+      b.type = 'button';
+      b.setAttribute('aria-label', label);
+      return b;
+    }
+    var close = btn('news-lightbox-close', 'Закрыть', '×');
+    var prev = btn('news-lightbox-prev', 'Предыдущий', '‹');
+    var next = btn('news-lightbox-next', 'Следующий', '›');
+    [img, cap, close, prev, next].forEach(function (n) { dlg.appendChild(n); });
+
+    var cur = 0;
+    function show(n) {
+      cur = (n + items.length) % items.length;
+      img.src = items[cur].src;
+      img.alt = 'Скриншот ' + (cur + 1) + ' из ' + items.length + ' — ' + title;
+      cap.textContent = (cur + 1) + ' / ' + items.length;
+      prev.hidden = next.hidden = items.length < 2;
+    }
+    close.addEventListener('click', function () { dlg.close(); });
+    prev.addEventListener('click', function () { show(cur - 1); });
+    next.addEventListener('click', function () { show(cur + 1); });
+    dlg.addEventListener('click', function (e) { if (e.target === dlg) dlg.close(); });
+    dlg.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowLeft') { show(cur - 1); e.preventDefault(); }
+      else if (e.key === 'ArrowRight') { show(cur + 1); e.preventDefault(); }
+    });
+    dlg.addEventListener('close', function () { img.removeAttribute('src'); });
+    return { dlg: dlg, open: function (n) { show(n); if (!dlg.open) dlg.showModal(); } };
+  }
+
+  function renderGallery(post) {
+    var items = galleryItems(post.gallery);
+    if (!items.length) return null;
+    var section = el('section', 'news-gallery');
+    section.setAttribute('aria-label', 'Скриншоты');
+    section.appendChild(el('h2', 'news-gallery-title', 'Скриншоты'));
+    var grid = el('div', 'news-gallery-grid');
+    if (items.length === 1) grid.classList.add('is-single');
+    var box = buildLightbox(items, post.title);
+    items.forEach(function (it, i) {
+      var b = el('button', 'news-gallery-item');
+      b.type = 'button';
+      b.setAttribute('aria-label', 'Открыть скриншот ' + (i + 1) + ' из ' + items.length);
+      var im = el('img', 'news-gallery-img');
+      im.src = it.src;
+      im.alt = 'Скриншот ' + (i + 1) + ' — ' + post.title;
+      im.width = it.w;
+      im.height = it.h;
+      im.loading = 'lazy';
+      im.decoding = 'async';
+      b.appendChild(im);
+      b.addEventListener('click', function () { box.open(i); });
+      grid.appendChild(b);
+    });
+    section.appendChild(grid);
+    section.appendChild(box.dlg);
+    return section;
+  }
+
   /* ---------- Список новостей ---------- */
   var grid = document.getElementById('news-grid');
 
@@ -91,6 +200,10 @@
       img.decoding = 'async';
       if (i > 2) img.loading = 'lazy';
       imgWrap.appendChild(img);
+      if (isPinned(p)) {
+        a.classList.add('is-pinned');
+        imgWrap.appendChild(pinBadge());
+      }
 
       var body = el('div', 'news-card-body');
       var meta = el('span', 'news-card-date', formatDate(p.date));
@@ -159,6 +272,8 @@
       if (trusted) content.innerHTML = post.content;      // ручные посты пишет владелец сайта в news-data.js
       else content.appendChild(sanitize(post.content));   // посты бота — только через фильтр
       root.appendChild(content);
+      var gallery = renderGallery(post);
+      if (gallery) root.appendChild(gallery);
     };
     var notFound = function () {
       document.title = 'Пост не найден — MineLain';
