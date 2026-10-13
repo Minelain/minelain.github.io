@@ -6,4 +6,4 @@ icon: hand-pointer
 
 **На сервере действуйте постоянный конкурс на привилегию ВИПа. Чтобы выиграть этот конкурс нужно иметь самый большой наигранный онлайн за серверный сезон.**&#x20;
 
-<figure><img src="../.gitbook/assets/Screenshot_20260622_022330.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/Screenshot_20260622_022330.webp" alt=""><figcaption></figcaption></figure>

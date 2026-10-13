@@ -46,6 +46,44 @@ SLUGS = {
 }
 
 
+# ---------------------------------------------------------------- иконки статей
+# Контурные 24×24 иконки (stroke = currentColor). Собираются в один SVG-спрайт на странице,
+# дальше везде <svg class="wi"><use href="#wi-<slug>"/></svg> — иконки не дублируются в разметке.
+ICONS = {
+    "index": '<circle cx="12" cy="12" r="9"/><path d="M12 11v5.5M12 7.6h.01"/>',
+    "pravila": '<path d="M12 3l7.5 3v5.5c0 4.6-3.1 8.1-7.5 9.5-4.4-1.4-7.5-4.9-7.5-9.5V6L12 3z"/><path d="m8.8 12.2 2.2 2.2 4.2-4.4"/>',
+    "nachat-igru/quickstart": '<path d="M13.2 3 5.5 13.4h5.8L10.6 21l7.9-10.6h-5.8L13.2 3z"/>',
+    "nachat-igru/kak-zajti": '<path d="M14 4.5h3.5A2.5 2.5 0 0 1 20 7v10a2.5 2.5 0 0 1-2.5 2.5H14"/><path d="m10 8 4 4-4 4M14 12H4"/>',
+    "nachat-igru/konkursy": '<path d="M8 4h8v5a4 4 0 0 1-8 0V4z"/><path d="M8 5.5H5.5V7A3 3 0 0 0 8 10M16 5.5h2.5V7A3 3 0 0 1 16 10M12 13v4M8.5 20h7M9.5 20v-3h5v3"/>',
+    "nachat-igru/pomoshch": '<path d="M12 20s-7.5-4.6-7.5-10.2A4.2 4.2 0 0 1 12 7.3a4.2 4.2 0 0 1 7.5 2.5C19.5 15.4 12 20 12 20z"/>',
+    "po-igre/goroda": '<path d="M3.5 20.5h17M5.5 20.5V10l4-2.5v13M9.5 20.5V4l8 3v13.5M13 9.5h1.5M13 12.5h1.5M13 15.5h1.5"/>',
+    "po-igre/nacii": '<path d="M5.5 21V4M5.5 4.5h11.8l-2.3 3.8 2.3 3.8H5.5"/>',
+    "po-igre/voiny": '<path d="M4 4l10.5 10.5M20 4 9.5 14.5M12 16.5l-2.5 2.5M14.5 14.5l1.8 1.8M9.5 14.5l-1.8 1.8M4 20l3-3M20 20l-3-3"/>',
+    "po-igre/epokhi": '<circle cx="12" cy="12" r="9"/><path d="M12 7v5.2l3.3 2"/>',
+    "po-igre/viktorina": '<circle cx="12" cy="12" r="9"/><path d="M9.6 9.6a2.5 2.5 0 1 1 3.6 2.2c-.8.4-1.2.9-1.2 1.8M12 16.8h.01"/>',
+    "po-igre/zarabotok": '<circle cx="12" cy="12" r="9"/><path d="M14.7 9.3c-.5-.8-1.5-1.3-2.7-1.3-1.5 0-2.6.8-2.6 2s1.1 1.6 2.6 2 2.6.8 2.6 2-1.1 2-2.6 2c-1.2 0-2.2-.5-2.7-1.3M12 6.3V8M12 16v1.7"/>',
+    "po-igre/alkogol": '<path d="M7 3.5h10l-.7 6a4.3 4.3 0 0 1-8.6 0L7 3.5z"/><path d="M12 14v6M8.5 20.5h7M7.3 8h9.4"/>',
+    "lor/gazeta-12-sezon": '<path d="M5 5h11v13.5H7A2 2 0 0 1 5 16.5V5z"/><path d="M16 9h3v7.5a2 2 0 0 1-2 2h-1M8 9h5M8 12h5M8 15h3"/>',
+}
+FALLBACK_ICON = '<path d="M7 3.5h7l4 4v13H7z"/><path d="M14 3.5v4h4M9.5 12h6M9.5 15.5h6"/>'
+
+
+def icon_id(slug):
+    return "wi-" + slug.replace("/", "-")
+
+
+def icon(slug, cls="wi"):
+    return f'<svg class="{cls}" aria-hidden="true" focusable="false"><use href="#{icon_id(slug)}"/></svg>'
+
+
+def icon_sprite(pages):
+    syms = "".join(
+        f'<symbol id="{icon_id(p["slug"])}" viewBox="0 0 24 24">{ICONS.get(p["slug"], FALLBACK_ICON)}</symbol>'
+        for p in pages
+    )
+    return f'<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">{syms}</svg>'
+
+
 # ---------------------------------------------------------------- оглавление
 def parse_summary():
     pages, section = [], None
@@ -116,7 +154,7 @@ def prepare_md(text, pages, cur):
             print(f"  ! content-ref без цели: {url}")
             return f'<a class="wiki-ref" href="{html.escape(url)}"><b>{label}</b></a>'
         return (f'\n<a class="wiki-ref" href="{rel(cur["slug"], target["slug"])}">'
-                f'<span>Читать дальше</span><b>{label}</b></a>\n')
+                f'<span>Читать дальше</span><b>{icon(target["slug"])}{label}</b></a>\n')
 
     text = re.sub(r'\{%\s*content-ref url="(.+?)"\s*%\}.*?\{%\s*endcontent-ref\s*%\}', ref, text, flags=re.S)
     text = re.sub(r"\[([^\]]+)\]\(#user-content-fn-\d+\)", r"\1", text)      # битые сноски GitBook
@@ -192,6 +230,14 @@ def postprocess(body_html, cur, pages):
         if src.startswith("../.gitbook/assets/"):
             # assets лежит в wiki/assets, страница — в wiki/<slug>.html
             img["src"] = ("../" * (len(Path(cur["slug"]).parts) - 1)) + "assets/" + src.split("/")[-1]
+            local = SRC / ".gitbook" / "assets" / src.split("/")[-1]
+            if local.exists():
+                try:
+                    from PIL import Image
+                    with Image.open(local) as im:
+                        img["width"], img["height"] = str(im.width), str(im.height)
+                except Exception:
+                    pass
 
     # align="center" -> класс
     for el in soup.find_all(attrs={"align": True}):
@@ -234,7 +280,7 @@ def sidebar_html(pages, cur):
                 out.append(f'<div class="wiki-group-title">{html.escape(p["section"])}</div>')
             last = p["section"]
         active = ' class="active" aria-current="page"' if p is cur else ""
-        out.append(f'<a href="{rel(cur["slug"], p["slug"])}"{active}>{html.escape(p["title"])}</a>')
+        out.append(f'<a href="{rel(cur["slug"], p["slug"])}"{active}>{icon(p["slug"])}<span>{html.escape(p["title"])}</span></a>')
     out.append("</div>")
     return "\n".join(out)
 
@@ -258,12 +304,12 @@ def page_html(cur, idx, pages, body, title, toc, desc, chrome):
     pager = ""
     if prev_p:
         pager += (f'<a class="prev" href="{rel(cur["slug"], prev_p["slug"])}"><span>← Назад</span>'
-                  f'<b>{html.escape(prev_p["title"])}</b></a>')
+                  f'<b>{icon(prev_p["slug"])}{html.escape(prev_p["title"])}</b></a>')
     else:
         pager += "<span></span>"
     if next_p:
         pager += (f'<a class="next" href="{rel(cur["slug"], next_p["slug"])}"><span>Дальше →</span>'
-                  f'<b>{html.escape(next_p["title"])}</b></a>')
+                  f'<b>{icon(next_p["slug"])}{html.escape(next_p["title"])}</b></a>')
 
     crumbs = html.escape(cur["section"]) if cur["section"] else "Вики"
     full_title = f"{title} — Вики MineLain"
@@ -273,28 +319,23 @@ def page_html(cur, idx, pages, body, title, toc, desc, chrome):
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap">
-  <link href="{asset}css/style.css" rel="stylesheet">
-  <link rel="shortcut icon" type="image/x-icon" href="{asset}images/logo.png">
+  <link rel="preload" as="font" type="font/woff2" href="{asset}fonts/montserrat-cyrillic.woff2" crossorigin>
+  <link rel="preload" as="font" type="font/woff2" href="{asset}fonts/montserrat-latin.woff2" crossorigin>
+  <link rel="stylesheet" href="{asset}css/wiki.min.css">
+  <link rel="icon" href="{asset}images/logo.png">
   <title>{html.escape(full_title)}</title>
+  <meta name="theme-color" content="#212121">
   <meta name="description" content="{html.escape(desc)}">
   <meta property="og:title" content="{html.escape(full_title)}">
+  <meta property="og:type" content="article">
   <meta property="og:description" content="{html.escape(desc)}">
-  <link rel="stylesheet" href="{asset}css/normalize.css">
-  <link rel="stylesheet" href="{asset}css/style.min.css">
-  <link rel="stylesheet" href="{asset}css/custom.css">
-  <link rel="stylesheet" href="{asset}css/winter.css">
-  <link rel="stylesheet" href="{asset}css/dynamic.css">
-  <link rel="stylesheet" href="{asset}css/transition.css">
-  <link rel="stylesheet" href="{asset}css/wiki.css">
-  <script src="{asset}js/transition.js"></script>
+  <script src="{asset}js/transition.min.js"></script>
 </head>
 
-<body class="min-w-[400px]" style="background-color: #212121;">
+<body style="background-color: #212121; min-width: 320px;">
 
   {svg}
+  {icon_sprite(pages)}
 
   {header}
 
@@ -317,7 +358,7 @@ def page_html(cur, idx, pages, body, title, toc, desc, chrome):
           Разделы вики
         </button>
         <div class="wiki-crumbs">Вики · {crumbs}</div>
-        <h1 class="wiki-title">{html.escape(title)}</h1>
+        <h1 class="wiki-title"><span class="wiki-title-ico">{icon(cur["slug"])}</span><span>{html.escape(title)}</span></h1>
         <div class="wiki-body">
 {body}
         </div>
@@ -332,13 +373,10 @@ def page_html(cur, idx, pages, body, title, toc, desc, chrome):
   </footer>
 
   <script>window.WIKI_ROOT = "{wprefix}";</script>
-  <script src="{wprefix}wiki.js"></script>
+  <script src="{wprefix}wiki.min.js" defer></script>
   {menu_js}
 
-<script src="{asset}js/menu.js" defer></script>
-<script src="{asset}js/winter.js" defer></script>
-<script src="{asset}js/snow.js" defer></script>
-<script src="{asset}js/dynamic.js" defer></script>
+<script src="{asset}js/site.min.js" defer></script>
 </body>
 </html>
 """

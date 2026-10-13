@@ -3,26 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap">
-  <link href="../../css/style.css" rel="stylesheet">
-  <link rel="shortcut icon" type="image/x-icon" href="../../images/logo.png">
+  <link rel="preload" as="font" type="font/woff2" href="../../fonts/montserrat-cyrillic.woff2" crossorigin>
+  <link rel="preload" as="font" type="font/woff2" href="../../fonts/montserrat-latin.woff2" crossorigin>
+  <link rel="stylesheet" href="../../css/wiki.min.css">
+  <link rel="icon" href="../../images/logo.png">
   <title>Помощь серверу — Вики MineLain</title>
+  <meta name="theme-color" content="#212121">
   <meta name="description" content="Мы были бы вам очень признательны еслиб вы проголосовали за наш сервер на этих мониторингах.">
   <meta property="og:title" content="Помощь серверу — Вики MineLain">
+  <meta property="og:type" content="article">
   <meta property="og:description" content="Мы были бы вам очень признательны еслиб вы проголосовали за наш сервер на этих мониторингах.">
-  <link rel="stylesheet" href="../../css/normalize.css">
-  <link rel="stylesheet" href="../../css/style.min.css">
-  <link rel="stylesheet" href="../../css/custom.css">
-  <link rel="stylesheet" href="../../css/winter.css">
-  <link rel="stylesheet" href="../../css/dynamic.css">
-  <link rel="stylesheet" href="../../css/transition.css">
-  <link rel="stylesheet" href="../../css/wiki.css">
-  <script src="../../js/transition.js"></script>
+  <script src="../../js/transition.min.js"></script>
 </head>
 
-<body class="min-w-[400px]" style="background-color: #212121;">
+<body style="background-color: #212121; min-width: 320px;">
 
   <svg width="0" height="0" style="position: absolute; width: 0; height: 0; overflow: hidden;">
     <defs>
@@ -33,12 +27,13 @@
       </linearGradient>
     </defs>
   </svg>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><symbol id="wi-index" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5M12 7.6h.01"/></symbol><symbol id="wi-pravila" viewBox="0 0 24 24"><path d="M12 3l7.5 3v5.5c0 4.6-3.1 8.1-7.5 9.5-4.4-1.4-7.5-4.9-7.5-9.5V6L12 3z"/><path d="m8.8 12.2 2.2 2.2 4.2-4.4"/></symbol><symbol id="wi-nachat-igru-quickstart" viewBox="0 0 24 24"><path d="M13.2 3 5.5 13.4h5.8L10.6 21l7.9-10.6h-5.8L13.2 3z"/></symbol><symbol id="wi-nachat-igru-kak-zajti" viewBox="0 0 24 24"><path d="M14 4.5h3.5A2.5 2.5 0 0 1 20 7v10a2.5 2.5 0 0 1-2.5 2.5H14"/><path d="m10 8 4 4-4 4M14 12H4"/></symbol><symbol id="wi-nachat-igru-konkursy" viewBox="0 0 24 24"><path d="M8 4h8v5a4 4 0 0 1-8 0V4z"/><path d="M8 5.5H5.5V7A3 3 0 0 0 8 10M16 5.5h2.5V7A3 3 0 0 1 16 10M12 13v4M8.5 20h7M9.5 20v-3h5v3"/></symbol><symbol id="wi-nachat-igru-pomoshch" viewBox="0 0 24 24"><path d="M12 20s-7.5-4.6-7.5-10.2A4.2 4.2 0 0 1 12 7.3a4.2 4.2 0 0 1 7.5 2.5C19.5 15.4 12 20 12 20z"/></symbol><symbol id="wi-po-igre-goroda" viewBox="0 0 24 24"><path d="M3.5 20.5h17M5.5 20.5V10l4-2.5v13M9.5 20.5V4l8 3v13.5M13 9.5h1.5M13 12.5h1.5M13 15.5h1.5"/></symbol><symbol id="wi-po-igre-nacii" viewBox="0 0 24 24"><path d="M5.5 21V4M5.5 4.5h11.8l-2.3 3.8 2.3 3.8H5.5"/></symbol><symbol id="wi-po-igre-voiny" viewBox="0 0 24 24"><path d="M4 4l10.5 10.5M20 4 9.5 14.5M12 16.5l-2.5 2.5M14.5 14.5l1.8 1.8M9.5 14.5l-1.8 1.8M4 20l3-3M20 20l-3-3"/></symbol><symbol id="wi-po-igre-epokhi" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5.2l3.3 2"/></symbol><symbol id="wi-po-igre-viktorina" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.6a2.5 2.5 0 1 1 3.6 2.2c-.8.4-1.2.9-1.2 1.8M12 16.8h.01"/></symbol><symbol id="wi-po-igre-zarabotok" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M14.7 9.3c-.5-.8-1.5-1.3-2.7-1.3-1.5 0-2.6.8-2.6 2s1.1 1.6 2.6 2 2.6.8 2.6 2-1.1 2-2.6 2c-1.2 0-2.2-.5-2.7-1.3M12 6.3V8M12 16v1.7"/></symbol><symbol id="wi-po-igre-alkogol" viewBox="0 0 24 24"><path d="M7 3.5h10l-.7 6a4.3 4.3 0 0 1-8.6 0L7 3.5z"/><path d="M12 14v6M8.5 20.5h7M7.3 8h9.4"/></symbol><symbol id="wi-lor-gazeta-12-sezon" viewBox="0 0 24 24"><path d="M5 5h11v13.5H7A2 2 0 0 1 5 16.5V5z"/><path d="M16 9h3v7.5a2 2 0 0 1-2 2h-1M8 9h5M8 12h5M8 15h3"/></symbol></svg>
 
   <header class=" shadow-xl " style="background-color: #212121;">
   <nav class="font-inter font-semibold px-2 md:px-2 sm:px-4 lg:py-0 py-2.5  w-full z-20 top-0 left-0">
     <div class="container flex flex-wrap items-center justify-between mx-auto">
       <a href="https://minelain.github.io/" class="flex items-center">
-        <img src="../../images/logo.png" class="logo-image" alt="Logo">
+        <img src="../../images/logo.avif" class="logo-image" alt="MineLain" width="50" height="50">
       </a>
 
       <div class="flex lg:order-2 items-center space-x-2 sm:space-x-3">
@@ -90,14 +85,6 @@
               Карта
             </a>
           </li>
-          <li>
-            <a href="/offline-map.html" class="text-white rounded-lg lg:py-2.5 hover:text-white duration-100 transition-all flex items-center px-5 py-4">
-              <svg class="w-6 h-6 lg:w-5 lg:h-5 mr-3 lg:mr-2 flex-shrink-0" fill="none" stroke="url(#playGradient)" viewBox="0 0 24 24" stroke-width="1.5">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M9 6.75V15m6-6v8.25m.503 3.498l4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 00-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0z"></path>
-              </svg>
-              Оффлайн карта(не работает)
-            </a>
-          </li>
         </ul>
       </div>
     </div>
@@ -114,29 +101,29 @@
         </div>
         <nav class="wiki-nav">
 <div class="wiki-group">
-<a href="../">О проекте</a>
-<a href="../pravila.html">Правила</a>
+<a href="../"><svg class="wi" aria-hidden="true" focusable="false"><use href="#wi-index"/></svg><span>О проекте</span></a>
+<a href="../pravila.html"><svg class="wi" aria-hidden="true" focusable="false"><use href="#wi-pravila"/></svg><span>Правила</span></a>
 </div>
 <div class="wiki-group">
 <div class="wiki-group-title">Начать игру</div>
-<a href="../nachat-igru/quickstart.html">Быстрый старт</a>
-<a href="../nachat-igru/kak-zajti.html">Как зайти на сервер</a>
-<a href="../nachat-igru/konkursy.html">Конкурсы</a>
-<a href="../nachat-igru/pomoshch.html" class="active" aria-current="page">Помощь серверу</a>
+<a href="../nachat-igru/quickstart.html"><svg class="wi" aria-hidden="true" focusable="false"><use href="#wi-nachat-igru-quickstart"/></svg><span>Быстрый старт</span></a>
+<a href="../nachat-igru/kak-zajti.html"><svg class="wi" aria-hidden="true" focusable="false"><use href="#wi-nachat-igru-kak-zajti"/></svg><span>Как зайти на сервер</span></a>
+<a href="../nachat-igru/konkursy.html"><svg class="wi" aria-hidden="true" focusable="false"><use href="#wi-nachat-igru-konkursy"/></svg><span>Конкурсы</span></a>
+<a href="../nachat-igru/pomoshch.html" class="active" aria-current="page"><svg class="wi" aria-hidden="true" focusable="false"><use href="#wi-nachat-igru-pomoshch"/></svg><span>Помощь серверу</span></a>
 </div>
 <div class="wiki-group">
 <div class="wiki-group-title">По игре</div>
-<a href="../po-igre/goroda.html">Города</a>
-<a href="../po-igre/nacii.html">Нации</a>
-<a href="../po-igre/voiny.html">Система войн</a>
-<a href="../po-igre/epokhi.html">Эпохи</a>
-<a href="../po-igre/viktorina.html">Викторина - ответы</a>
-<a href="../po-igre/zarabotok.html">Способы заработка</a>
-<a href="../po-igre/alkogol.html">Алкоголь</a>
+<a href="../po-igre/goroda.html"><svg class="wi" aria-hidden="true" focusable="false"><use href="#wi-po-igre-goroda"/></svg><span>Города</span></a>
+<a href="../po-igre/nacii.html"><svg class="wi" aria-hidden="true" focusable="false"><use href="#wi-po-igre-nacii"/></svg><span>Нации</span></a>
+<a href="../po-igre/voiny.html"><svg class="wi" aria-hidden="true" focusable="false"><use href="#wi-po-igre-voiny"/></svg><span>Система войн</span></a>
+<a href="../po-igre/epokhi.html"><svg class="wi" aria-hidden="true" focusable="false"><use href="#wi-po-igre-epokhi"/></svg><span>Эпохи</span></a>
+<a href="../po-igre/viktorina.html"><svg class="wi" aria-hidden="true" focusable="false"><use href="#wi-po-igre-viktorina"/></svg><span>Викторина - ответы</span></a>
+<a href="../po-igre/zarabotok.html"><svg class="wi" aria-hidden="true" focusable="false"><use href="#wi-po-igre-zarabotok"/></svg><span>Способы заработка</span></a>
+<a href="../po-igre/alkogol.html"><svg class="wi" aria-hidden="true" focusable="false"><use href="#wi-po-igre-alkogol"/></svg><span>Алкоголь</span></a>
 </div>
 <div class="wiki-group">
 <div class="wiki-group-title">Лор</div>
-<a href="../lor/gazeta-12-sezon.html">Газета:12 сезон Minecampff</a>
+<a href="../lor/gazeta-12-sezon.html"><svg class="wi" aria-hidden="true" focusable="false"><use href="#wi-lor-gazeta-12-sezon"/></svg><span>Газета:12 сезон Minecampff</span></a>
 </div>
         </nav>
       </aside>
@@ -147,13 +134,13 @@
           Разделы вики
         </button>
         <div class="wiki-crumbs">Вики · Начать игру</div>
-        <h1 class="wiki-title">Помощь серверу</h1>
+        <h1 class="wiki-title"><span class="wiki-title-ico"><svg class="wi" aria-hidden="true" focusable="false"><use href="#wi-nachat-igru-pomoshch"/></svg></span><span>Помощь серверу</span></h1>
         <div class="wiki-body">
 
 <p>Мы были бы вам очень признательны еслиб вы проголосовали за наш сервер на этих мониторингах.</p>
 <h4 class="is-center"><a href="https://top-minecrafter.com/server/23683/" rel="noopener noreferrer" target="_blank">Мониторинг1</a> <a href="https://hotmc.ru/minecraft-server-285509" rel="noopener noreferrer" target="_blank">Мониторинг2</a> <a href="https://minecraftrating.ru/server/minelain/" rel="noopener noreferrer" target="_blank">Мониторинг3</a></h4>
         </div>
-        <div class="wiki-pager"><a class="prev" href="../nachat-igru/konkursy.html"><span>← Назад</span><b>Конкурсы</b></a><a class="next" href="../po-igre/goroda.html"><span>Дальше →</span><b>Города</b></a></div>
+        <div class="wiki-pager"><a class="prev" href="../nachat-igru/konkursy.html"><span>← Назад</span><b><svg class="wi" aria-hidden="true" focusable="false"><use href="#wi-nachat-igru-konkursy"/></svg>Конкурсы</b></a><a class="next" href="../po-igre/goroda.html"><span>Дальше →</span><b><svg class="wi" aria-hidden="true" focusable="false"><use href="#wi-po-igre-goroda"/></svg>Города</b></a></div>
       </article>
 
       <aside class="wiki-toc" id="wiki-toc"></aside>
@@ -164,11 +151,9 @@
   </footer>
 
   <script>window.WIKI_ROOT = "../../wiki/";</script>
-  <script src="../../wiki/wiki.js"></script>
+  <script src="../../wiki/wiki.min.js" defer></script>
+  
 
-<script src="../../js/menu.js" defer></script>
-<script src="../../js/winter.js" defer></script>
-<script src="../../js/snow.js" defer></script>
-<script src="../../js/dynamic.js" defer></script>
+<script src="../../js/site.min.js" defer></script>
 </body>
 </html>

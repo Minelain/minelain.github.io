@@ -1,0 +1,7 @@
+{
+  "name": "minelain-build-tools",
+  "private": true,
+  "description": "Сборка CSS/JS сайта MineLain (см. tools/README.md)",
+  "scripts": { "build": "python3 build_wiki.py && python3 build_assets.py" },
+  "devDependencies": { "csso-cli": "^4.0.2","purgecss": "^8.0.0","terser": "^5.51.2" }
+}

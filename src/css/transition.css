@@ -1,0 +1,33 @@
+/* ===========================
+   ПЛАВНЫЕ ПЕРЕХОДЫ МЕЖДУ СТРАНИЦАМИ
+   Работает вместе с js/transition.js.
+
+   • Chrome / Edge / Safari 18.2+ — нативные View Transitions:
+     шапка остаётся на месте, меняется только содержимое.
+   • Остальные браузеры — запасной вариант: затухание/появление.
+
+   Чтобы отключить: уберите <link ... transition.css> и
+   <script ... transition.js> со страниц.
+=========================== */
+
+@view-transition { navigation: auto; }
+
+/* Шапка не мигает при переходе, а остаётся «приклеенной» */
+header { view-transition-name: site-header; }
+::view-transition-group(site-header) { animation-duration: 0.3s; }
+
+::view-transition-old(root) { animation: vtOut 0.2s ease both; }
+::view-transition-new(root) { animation: vtIn 0.4s cubic-bezier(0.22, 1, 0.36, 1) both; }
+
+@keyframes vtOut { to   { opacity: 0; } }
+@keyframes vtIn  { from { opacity: 0; transform: translateY(10px); } }
+
+/* ----- Запасной вариант (браузеры без View Transitions) ----- */
+@keyframes pageIn { from { opacity: 0; } to { opacity: 1; } }
+html:not(.vt) body { animation: pageIn 0.45s ease backwards; }
+html:not(.vt) body.page-leave { opacity: 0; transition: opacity 0.22s ease; }
+
+@media (prefers-reduced-motion: reduce) {
+    @view-transition { navigation: none; }
+    html:not(.vt) body { animation: none; }
+}

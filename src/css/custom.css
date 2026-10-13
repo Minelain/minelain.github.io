@@ -1,0 +1,898 @@
+/* Стили для закругления краев логотипа */
+.logo-image {
+    border-radius: 12px;
+    transition: border-radius 0.3s ease;
+}
+
+.logo-image:hover {
+    border-radius: 16px;
+}
+
+/* Альтернативный вариант с более мягким закруглением */
+.logo-rounded {
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.logo-rounded:hover {
+    border-radius: 12px;
+    transform: scale(1.02);
+}
+
+/* Вариант с очень мягким закруглением */
+.logo-soft {
+    border-radius: 6px;
+    transition: border-radius 0.3s ease;
+}
+
+.logo-soft:hover {
+    border-radius: 10px;
+}
+
+/* Вариант с сильным закруглением */
+.logo-strong {
+    border-radius: 20px;
+    transition: border-radius 0.3s ease;
+}
+
+.logo-strong:hover {
+    border-radius: 25px;
+}
+
+/* Стили для кнопки "Играть" с бирюзово-голубым градиентом */
+.style-btn {
+    background: linear-gradient(135deg, #00CED1 0%, #40E0D0 50%, #00BFFF 100%);
+    background-size: 200% 200%;
+    border: none;
+    color: #fff;
+    font-size: 1.125rem;
+    font-weight: 600;
+    padding: 12px 20px;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    animation: gradientShift 3s ease infinite;
+}
+
+.style-btn:hover {
+    background: linear-gradient(135deg, #00BFFF 0%, #00CED1 50%, #40E0D0 100%);
+    background-size: 200% 200%;
+    box-shadow: 0 4px 20px rgba(0, 206, 209, 0.4), 0 8px 30px rgba(64, 224, 208, 0.3);
+    transform: scale(1.05);
+    animation: gradientShift 1.5s ease infinite;
+}
+
+.style-btn:active {
+    box-shadow: 0 2px 10px rgba(0, 206, 209, 0.3);
+}
+
+/* Анимация градиента */
+@keyframes gradientShift {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* Альтернативный вариант градиента */
+.style-btn-alt {
+    background: linear-gradient(45deg, #20B2AA 0%, #48D1CC 25%, #00CED1 50%, #40E0D0 75%, #00BFFF 100%);
+    border: none;
+    color: #fff;
+    font-size: 1.125rem;
+    font-weight: 600;
+    padding: 12px 20px;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.style-btn-alt:hover {
+    background: linear-gradient(45deg, #00BFFF 0%, #20B2AA 25%, #48D1CC 50%, #00CED1 75%, #40E0D0 100%);
+    box-shadow: 0 6px 25px rgba(32, 178, 170, 0.5), 0 12px 40px rgba(72, 209, 204, 0.4);
+}
+
+/* ===========================
+   УЛУЧШЕНИЯ ДИЗАЙНА САЙТА
+=========================== */
+
+/* Улучшенная типографика */
+.title {
+    background: linear-gradient(135deg, #ffffff 0%, #e0e0e0 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    letter-spacing: -0.02em;
+}
+
+.title-section {
+    background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    position: relative;
+}
+
+.title-section::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, #00CED1, #40E0D0, #00BFFF);
+    border-radius: 2px;
+}
+
+/* Улучшенные карточки */
+.todo-item {
+    height: 425px; /* Фиксированная высота */
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    padding: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    border: 2px solid rgba(255, 255, 255, 0.15);
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+}
+
+.todo-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transition: left 0.5s ease;
+}
+
+.todo-item:hover::before {
+    left: 100%;
+}
+
+.todo-item:hover {
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    border-color: rgba(0, 206, 209, 0.4);
+    border-width: 3px;
+}
+
+.todo-image {
+    border-radius: 12px;
+    transition: filter 0.3s ease;
+    filter: brightness(0.9);
+}
+
+.todo-item:hover .todo-image {
+    filter: brightness(1.1);
+}
+
+/* Улучшаем сетку карточек */
+.second-section .todo {
+    gap: 15px !important;
+    margin-top: 30px;
+}
+
+/* Улучшенная секция с игроками */
+.three-section {
+    background: linear-gradient(135deg, #282936 0%, #1a1b23 100%);
+    position: relative;
+}
+
+.three-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 30% 20%, rgba(0, 206, 209, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 70% 80%, rgba(64, 224, 208, 0.1) 0%, transparent 50%);
+    pointer-events: none;
+}
+
+.player-card {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Улучшенные карточки в четвертой секции */
+.four-section .card {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.03) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.four-section .card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(0, 206, 209, 0.1) 0%, transparent 50%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.four-section .card:hover::before {
+    opacity: 1;
+}
+
+.four-section .card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    border-color: rgba(0, 206, 209, 0.3);
+}
+
+/* Улучшенные спойлеры */
+.five-section .spoller-item {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 8px;
+    margin-bottom: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: background-color 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.five-section .spoller-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: linear-gradient(180deg, #00CED1, #40E0D0);
+    transform: scaleY(0);
+    transition: transform 0.3s ease;
+}
+
+.five-section .spoller-item:hover::before,
+.five-section .spoller-item.active::before {
+    transform: scaleY(1);
+}
+
+.five-section .spoller-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+    transform: translateX(5px);
+}
+
+.five-section .spoller-item.active {
+    background: rgba(0, 206, 209, 0.1);
+    border-color: rgba(0, 206, 209, 0.3);
+}
+
+/* Улучшенные карточки ссылок */
+.six-section .item-card {
+    transition: transform 0.3s ease;
+}
+
+.six-section .item-card-link {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.03) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.six-section .item-card-link::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transition: left 0.5s ease;
+}
+
+.six-section .item-card-link:hover::before {
+    left: 100%;
+}
+
+.six-section .item-card-link:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    border-color: rgba(0, 206, 209, 0.3);
+}
+
+.image-wraper {
+    border-radius: 12px;
+    transition: transform 0.3s ease;
+    overflow: hidden;
+}
+
+.six-section .item-card-link:hover .image-wraper {
+    transform: scale(1.05);
+}
+
+/* Улучшенный фон для первой секции */
+.first-section {
+    position: relative;
+    overflow: hidden;
+}
+
+.first-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 20% 50%, rgba(0, 206, 209, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(64, 224, 208, 0.1) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.first-section .info-block {
+    position: relative;
+    z-index: 2;
+}
+
+/* Улучшенные медиа-запросы */
+@media (max-width: 768px) {
+    .todo-item {
+        margin-bottom: 20px;
+        border-width: 2px;
+        padding: 15px;
+        width: 100%;
+        max-width: none !important;
+    }
+    .todo-item:hover {
+        transform: translateY(-4px);
+        border-width: 3px;
+    }
+    
+    /* Улучшаем сетку на планшетах */
+    .second-section .todo {
+        gap: 12px !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+    
+    .title-section::after {
+        width: 40px;
+        height: 2px;
+    }
+    
+    /* Адаптивные стили для карточек */
+    .four-section .card {
+        border-width: 2px;
+        padding: 20px;
+    }
+    
+    .four-section .card:hover {
+        transform: translateY(-4px);
+        border-width: 3px;
+    }
+    
+    .six-section .item-card-link {
+        border-width: 2px;
+        padding: 15px;
+    }
+    
+    .six-section .item-card-link:hover {
+        transform: translateY(-4px);
+        border-width: 3px;
+    }
+    
+    .player-card {
+        padding: 10px;
+        border-width: 1.5px;
+        /* Убираем эффекты наведения */
+        transition: none;
+    }
+    
+    .player-card:hover {
+        transform: none;
+        border-width: 1.5px;
+        box-shadow: none;
+    }
+    
+    /* Адаптивные стили для спойлеров */
+    .five-section .spoller-item {
+        border-width: 2px;
+        padding: 15px;
+    }
+    
+    .five-section .spoller-item:hover,
+    .five-section .spoller-item.active {
+        border-width: 3px;
+    }
+    
+    /* Адаптивные стили для навигации */
+    nav a::before {
+        height: 3px;
+        bottom: -3px;
+    }
+    
+    nav button:hover {
+        transform: translateY(-1px);
+    }
+    
+    /* Адаптивные стили для изображений */
+    .todo-image {
+        max-width: 100%;
+        height: auto;
+    }
+    
+    .image-wraper {
+        border-radius: 8px;
+    }
+    
+    /* Адаптивные стили для типографики */
+    .title {
+        font-size: 2.5rem;
+        line-height: 1.2;
+    }
+    
+    .title-section {
+        font-size: 1.8rem;
+        line-height: 1.3;
+    }
+    
+    .todo-item-title {
+        font-size: 1.2rem;
+        line-height: 1.4;
+    }
+    
+    .todo-item-desc {
+        font-size: 0.95rem;
+        line-height: 1.5;
+    }
+    
+    /* Адаптивные стили для кнопки "Играть" */
+    .style-btn {
+        padding: 10px 18px;
+        font-size: 1rem;
+    }
+    
+    .style-btn:hover {
+        transform: translateY(-1px);
+    }
+    
+    /* Адаптивные стили для иконок */
+    .title-icon {
+        width: 35px;
+        height: 35px;
+    }
+    
+    /* Адаптивные стили для ссылок */
+    .card-link::after {
+        right: -15px;
+    }
+    
+    .card-link:hover::after {
+        right: -18px;
+    }
+}
+
+@media (max-width: 480px) {
+    #navbar-sticky a {
+        padding: 0.8rem 1.2rem !important;
+    }
+    
+    .todo-item {
+        padding: 12px;
+        border-width: 1.5px;
+        width: 100%;
+        max-width: none !important;
+    }
+    
+    .todo-item:hover {
+        transform: translateY(-2px);
+        border-width: 2px;
+    }
+    
+    /* Одна колонка на мобильных */
+    .second-section .todo {
+        grid-template-columns: 1fr !important;
+        gap: 10px !important;
+    }
+    
+    .title {
+        font-size: 2rem;
+
+    }
+    
+    .todo-item-title {
+        font-size: 1.1rem;
+    }
+    
+    .todo-item-desc {
+        font-size: 0.9rem;
+    }
+    
+    .style-btn {
+        padding: 8px 16px;
+        font-size: 0.95rem;
+    }
+    
+    .four-section .card {
+        padding: 15px;
+        border-width: 1.5px;
+    }
+    
+    .four-section .card:hover {
+        transform: translateY(-2px);
+        border-width: 2px;
+    }
+    
+    .six-section .item-card-link {
+        padding: 12px;
+        border-width: 1.5px;
+    }
+    
+    .six-section .item-card-link:hover {
+        transform: translateY(-2px);
+        border-width: 2px;
+    }
+    
+    .player-card {
+        padding: 10px;
+        border-width: 1.5px;
+    }
+    
+    .player-card:hover {
+        transform: translateY(-2px) scale(1.005);
+        border-width: 2px;
+    }
+    
+    .five-section .spoller-item {
+        padding: 12px;
+        border-width: 1.5px;
+    }
+    
+    .five-section .spoller-item:hover,
+    .five-section .spoller-item.active {
+        border-width: 2px;
+    }
+    
+    .title-icon {
+        width: 30px;
+        height: 30px;
+    }
+}
+
+/* Дополнительные улучшения для планшетов */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .todo-item {
+        padding: 18px;
+        border-width: 2px;
+        width: 100%;
+        max-width: none !important;
+    }
+    
+    .todo-item:hover {
+        transform: translateY(-6px);
+        border-width: 3px;
+    }
+    
+    /* Две колонки на планшетах */
+    .second-section .todo {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 15px !important;
+    }
+    
+    .title {
+        font-size: 2.8rem;
+    }
+    
+    .title-section {
+        font-size: 2rem;
+    }
+    
+    .four-section .card {
+        padding: 25px;
+        border-width: 2px;
+    }
+    
+    .four-section .card:hover {
+        transform: translateY(-6px);
+        border-width: 3px;
+    }
+    
+    .six-section .item-card-link {
+        padding: 20px;
+        border-width: 2px;
+    }
+    
+    .six-section .item-card-link:hover {
+        transform: translateY(-6px);
+        border-width: 3px;
+    }
+    
+    .player-card {
+        padding: 15px;
+        border-width: 2px;
+        /* Убираем эффекты наведения */
+        transition: none;
+    }
+    
+    .player-card:hover {
+        transform: none;
+        border-width: 2px;
+        box-shadow: none;
+    }
+}
+
+/* Улучшения для больших экранов */
+@media (min-width: 1025px) {
+    .todo-item {
+        padding: 25px;
+        border-width: 2px;
+        width: 100%;
+        max-width: none !important;
+    }
+    
+    .todo-item:hover {
+        transform: translateY(-10px);
+        border-width: 3px;
+    }
+    
+    /* Четыре колонки на больших экранах */
+    .second-section .todo {
+        grid-template-columns: repeat(4, 1fr) !important;
+        gap: 15px !important;
+    }
+    
+    .four-section .card {
+        padding: 30px;
+        border-width: 2px;
+    }
+    
+    .four-section .card:hover {
+        transform: translateY(-10px);
+        border-width: 3px;
+    }
+    
+    .six-section .item-card-link {
+        padding: 25px;
+        border-width: 2px;
+    }
+    
+    .six-section .item-card-link:hover {
+        transform: scale(1.01);
+    }
+
+}
+
+/* Исправление 6 секции - одинаковый размер карточек */
+.six-section .content-cards-links {
+    display: grid;
+    align-items: stretch;
+    column-gap: 20px;
+    row-gap: 50px;
+    grid-template-columns: repeat(3, 1fr);
+    justify-items: stretch;
+}
+
+.six-section .content-cards-links .item-card {
+    width: 100%;
+    max-width: none;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.six-section .content-cards-links .item-card .item-card-link {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.six-section .content-cards-links .item-card .image-wraper {
+    padding: 1.125em;
+    border-radius: 1.25em;
+    flex-shrink: 0;
+}
+
+.six-section .content-cards-links .item-card .image-wraper img {
+    width: 3.75em;
+    height: 3.75em;
+    transition: transform 0.3s ease;
+}
+
+.six-section .content-cards-links .item-card .info-wraper {
+    flex: 1;
+    min-width: 0;
+}
+
+.six-section .content-cards-links .item-card .title-card-link {
+    display: block;
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.six-section .content-cards-links .item-card .desc-card-link {
+    display: block;
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+/* Адаптивность для 6 секции */
+@media (max-width: 1310px) {
+    .six-section .content-cards-links { 
+        grid-template-columns: repeat(2, 1fr);
+        column-gap: 15px;
+        row-gap: 60px;
+    }
+}
+
+@media (max-width: 850px) {
+    .six-section .content-cards-links {
+        grid-template-columns: repeat(2, 1fr);
+        row-gap: 60px;
+        column-gap: 15px;
+    }
+    
+    .six-section .content-cards-links .item-card .item-card-link {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 25px 20px;
+    }
+    
+    .six-section .content-cards-links .item-card .info-wraper {
+        text-align: center;
+    }
+}
+
+@media (max-width: 590px) {
+    .six-section .content-cards-links {
+        grid-template-columns: 1fr;
+        row-gap: 40px;
+        column-gap: 0;
+    }
+    
+    .six-section .content-cards-links .item-card .item-card-link {
+        padding: 20px 15px;
+    }
+}
+  .navigation a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -6px;
+    width: 100%;
+    height: 3px;
+    background: #fff;
+    border-radius: 5px;
+    transform: scaleX(0);
+    transition: transform .5s;
+  }
+/* Кнопки жирнее */
+.item-menu a,
+.items-center a {
+  position: relative;       /* Чтобы ::after позиционировался относительно кнопки */
+  font-weight: 700;         /* Жирный текст */
+  transition: transform 0.3s ease, color 0.3s ease;  /* Плавное увеличение и изменение цвета */
+}
+
+/* Нижняя линия под кнопкой */
+.item-menu a::after,
+.items-center a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -6px;            /* Точно как у твоего примера */
+  width: 100%;
+  height: 3px;
+  background: #fff;         /* Цвет линии */
+  border-radius: 5px;
+  transform: scaleX(0);     /* Исходное состояние скрыто */
+  transition: transform 0.5s ease;  /* Плавное появление линии */
+}
+/* Анимация при наведении */
+.item-menu a:hover,
+.items-center a:hover {
+  transform: scale(1.05);    /* Плавное увеличение кнопки */
+}
+/* Анимация при наведении */
+.item-menu a:hover::after,
+.items-center a:hover::after {
+  transform: scaleX(0.6);    /* Линия полностью видна */
+}
+
+/* Мобильное меню: выпадающая панель.
+   Анимируются ТОЛЬКО transform и opacity (идут на GPU, не вызывают пересчёт
+   вёрстки). Панель лежит поверх страницы (absolute), поэтому контент ниже не
+   «прыгает» при открытии. Управляет js/menu.js (класс .show). */
+@media (max-width: 1023px) {
+    /* панель привязана к шапке, а не к центральному контейнеру — тянется на всю ширину экрана */
+    header nav .container { position: static; }
+    #navbar-sticky {
+        display: block !important;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        z-index: 45;
+        padding-bottom: 14px;
+        background-color: var(--header-bg, #212121);
+        border-bottom: 1px solid rgba(159, 231, 255, 0.16);
+        box-shadow: 0 22px 30px -12px rgba(0, 0, 0, 0.45);
+        visibility: hidden;
+        opacity: 0;
+        transform: translate3d(0, -12px, 0);
+        pointer-events: none;
+        transition: transform 0.26s cubic-bezier(0.22, 1, 0.36, 1),
+                    opacity 0.2s ease,
+                    visibility 0s linear 0.26s;
+        will-change: transform, opacity;
+    }
+    #navbar-sticky.show {
+        visibility: visible;
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+        pointer-events: auto;
+        transition-delay: 0s;
+    }
+    /* пункты «въезжают» по очереди — только при открытии */
+    #navbar-sticky.show li {
+        animation: navItemIn 0.34s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+    }
+    #navbar-sticky.show li:nth-child(1) { animation-delay: 0.04s; }
+    #navbar-sticky.show li:nth-child(2) { animation-delay: 0.08s; }
+    #navbar-sticky.show li:nth-child(3) { animation-delay: 0.12s; }
+    #navbar-sticky.show li:nth-child(4) { animation-delay: 0.16s; }
+    #navbar-sticky.show li:nth-child(5) { animation-delay: 0.2s; }
+    @keyframes navItemIn {
+        from { opacity: 0; transform: translate3d(-14px, 0, 0); }
+    }
+}
+
+/* ===========================
+   ПРОИЗВОДИТЕЛЬНОСТЬ
+=========================== */
+
+/* Бегущая строка игроков: слой на GPU, ставится на паузу вне экрана */
+.three-section .legendary-players-wall {
+    contain: layout paint;
+}
+.three-section .legendary-players-wall.is-offscreen .players-row {
+    animation-play-state: paused;
+}
+.three-section .players-row,
+.three-section .player-card {
+    backface-visibility: hidden;
+}
+
+/* Эффекты наведения нужны только там, где есть мышь.
+   На телефонах hover «залипает» после тапа и вызывает лишние перерисовки */
+@media (hover: none) {
+    .todo-item:hover,
+    .four-section .card:hover,
+    .six-section .item-card-link:hover,
+    .five-section .spoller-item:hover {
+        transform: none;
+        box-shadow: none;
+    }
+    .todo-item::before,
+    .six-section .item-card-link::before {
+        display: none;
+    }
+}
